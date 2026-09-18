@@ -1,0 +1,34 @@
+{
+  "name": "beepage2026",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@nuxt/image": "^2.1.0",
+    "@nuxt/ui": "^4.11.1",
+    "@nuxtjs/robots": "^6.2.3",
+    "@nuxtjs/sitemap": "^8.5.1",
+    "nuxt": "^4.5.2",
+    "tailwindcss": "^4.3.3",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.1"
+  },
+  "packageManager": "pnpm@11.17.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.17.0",
+    "eslint": "^10.10.0",
+    "typescript": "^5.9.3",
+    "vue-tsc": "^3.3.11"
+  }
+}
