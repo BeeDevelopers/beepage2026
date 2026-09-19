@@ -8,7 +8,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <main class="min-h-screen bg-default px-6 py-16 sm:py-24">
+  <main id="contenido" tabindex="-1" class="min-h-screen bg-default px-6 py-16 sm:py-24">
     <UContainer class="max-w-2xl">
       <div class="mb-8 space-y-4">
         <UBadge variant="subtle">Un nuevo comienzo</UBadge>
