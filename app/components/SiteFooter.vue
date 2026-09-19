@@ -9,15 +9,15 @@
         <div>
           <h2>Qué hacemos</h2>
           <ul>
-            <li><span role="link" aria-disabled="true" title="Próximamente">Desarrollo y aprendizaje</span></li>
-            <li><span role="link" aria-disabled="true" title="Próximamente">Proyectos y actividades</span></li>
+            <li><NuxtLink to="/#actividades">Desarrollo y aprendizaje</NuxtLink></li>
+            <li><NuxtLink to="/#proyectos">Proyectos y actividades</NuxtLink></li>
           </ul>
         </div>
         <div>
           <h2>Comunidad</h2>
           <ul>
-            <li><span role="link" aria-disabled="true" title="Próximamente">Sobre nosotros</span></li>
-            <li><span role="link" aria-disabled="true" title="Próximamente">Únete a nosotros</span></li>
+            <li><NuxtLink to="/#nosotros">Sobre nosotros</NuxtLink></li>
+            <li><NuxtLink to="/#registro">Únete a nosotros</NuxtLink></li>
           </ul>
         </div>
         <div>

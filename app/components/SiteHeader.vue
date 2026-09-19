@@ -44,7 +44,7 @@ onBeforeUnmount(() => desktopQuery?.removeEventListener('change', handleViewport
             <span class="pending-link" role="link" aria-disabled="true" :aria-label="label + ', próximamente'" title="Próximamente">{{ label }}</span>
           </li>
         </ul>
-        <span class="bee-button bee-button--pill" role="link" aria-disabled="true" title="Próximamente">Únete a nosotros</span>
+        <SiteButton to="/#registro" pill @click="closeMenu(true)">Únete a nosotros</SiteButton>
       </nav>
     </div>
   </header>
