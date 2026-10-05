@@ -10,9 +10,11 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
   ],
   css: ['~/assets/css/main.css'],
+  colorMode: { preference: 'light', fallback: 'light' },
   app: {
     head: {
       htmlAttrs: { lang: 'es' },
+      link: [{ rel: 'icon', type: 'image/png', href: '/images/Logos/Fondo Claro/BeeDevs_Logotipo_Favicon_280319.png' }],
     },
   },
   site: {
