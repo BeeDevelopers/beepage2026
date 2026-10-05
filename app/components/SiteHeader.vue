@@ -1,51 +1,80 @@
 <script setup lang="ts">
 const open = ref(false)
-const toggle = useTemplateRef('toggle')
-const route = useRoute()
 
-// Add teammates' confirmed routes when those pages become available.
-const pendingPages = ['Conócenos más', 'Beneficios de tu correo', 'Conoce DICIS', 'Galería']
+const pendingPages = [
+  { label: 'Conócenos más', disabled: true },
+  { label: 'Beneficios de tu correo', disabled: true },
+  { label: 'Conoce DICIS', disabled: true },
+  { label: 'Galería', disabled: true },
+]
 
-function closeMenu(restoreFocus = false) {
-  if (!open.value) return
-  open.value = false
-  if (restoreFocus) toggle.value?.focus()
+const navigationUi = {
+  root: 'header-navigation-menu',
+  list: 'header-navigation-list',
+  link: 'header-navigation-link',
+  linkLabel: 'header-navigation-label',
 }
-
-watch(() => route.fullPath, () => closeMenu())
-
-// Do not reopen an old mobile menu after a desktop/tablet resize.
-let desktopQuery: MediaQueryList | undefined
-function handleViewportChange(event: MediaQueryListEvent) {
-  if (event.matches) closeMenu()
-}
-onMounted(() => {
-  desktopQuery = window.matchMedia('(min-width: 851px)')
-  desktopQuery.addEventListener('change', handleViewportChange)
-})
-onBeforeUnmount(() => desktopQuery?.removeEventListener('change', handleViewportChange))
 </script>
 
 <template>
-  <header class="site-header" @keydown.esc="closeMenu(true)">
-    <div class="header-inner">
+  <UHeader
+    v-model:open="open"
+    title="BeeDevelopers"
+    mode="drawer"
+    class="site-header"
+    :ui="{
+      root: 'site-header static top-auto z-50 bg-transparent border-0 h-auto backdrop-blur-0',
+      container: 'header-inner',
+      center: 'header-center',
+      right: 'header-actions',
+      toggle: 'header-toggle',
+      content: 'header-mobile-content',
+      body: 'header-mobile-body',
+    }"
+  >
+    <template #left>
       <SiteLogo />
-      <button
-        ref="toggle" class="menu-toggle" type="button"
-        :aria-expanded="open" aria-controls="site-navigation"
-        :aria-label="open ? 'Cerrar menú' : 'Abrir menú'" @click="open = !open"
-      >
-        <span aria-hidden="true">{{ open ? '✕' : '☰' }}</span>
-        <span>Menú</span>
-      </button>
-      <nav id="site-navigation" class="site-navigation" :class="{ 'is-open': open }" aria-label="Navegación principal">
-        <ul>
-          <li v-for="label in pendingPages" :key="label">
-            <span class="pending-link" role="link" aria-disabled="true" :aria-label="label + ', próximamente'" title="Próximamente">{{ label }}</span>
-          </li>
-        </ul>
-        <SiteButton to="/#registro" pill @click="closeMenu(true)">Únete a nosotros</SiteButton>
+    </template>
+
+    <template #default>
+      <nav class="desktop-navigation" aria-label="Navegación principal">
+        <UNavigationMenu :items="pendingPages" variant="link" :ui="navigationUi" />
       </nav>
-    </div>
-  </header>
+    </template>
+
+    <template #right>
+      <UButton to="/#registro" class="bee-button bee-button--pill">
+        Únete a nosotros
+      </UButton>
+    </template>
+
+    <template #toggle="{ open: menuOpen, toggle }">
+      <UButton
+        type="button"
+        color="neutral"
+        variant="ghost"
+        class="menu-toggle"
+        :aria-expanded="menuOpen"
+        aria-controls="mobile-navigation"
+        :aria-label="menuOpen ? 'Cerrar menú' : 'Abrir menú'"
+        @click="toggle"
+      >
+        <span aria-hidden="true">{{ menuOpen ? '✕' : '☰' }}</span>
+      </UButton>
+    </template>
+
+    <template #content>
+      <nav id="mobile-navigation" class="mobile-navigation" aria-label="Navegación principal">
+        <UNavigationMenu
+          :items="pendingPages"
+          orientation="vertical"
+          variant="link"
+          :ui="navigationUi"
+        />
+        <UButton to="/#registro" class="bee-button bee-button--pill" @click="open = false">
+          Únete a nosotros
+        </UButton>
+      </nav>
+    </template>
+  </UHeader>
 </template>
