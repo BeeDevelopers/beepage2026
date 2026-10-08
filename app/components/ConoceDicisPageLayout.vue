@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Marco de navegación exclusivo de las páginas Conoce DICIS.
-type ConoceDicisSectionKey = 'calendario' | 'eventos'
+type ConoceDicisSectionKey = 'calendario' | 'eventos' | 'grupos'
 
 const conoceDicisLayoutProps = defineProps<{
   active?: ConoceDicisSectionKey
@@ -8,7 +8,8 @@ const conoceDicisLayoutProps = defineProps<{
 
 const conoceDicisNavigation = [
   { key: 'calendario', number: '01', label: 'Calendario semestral', to: '/conoce-dicis/calendario' },
-  { key: 'eventos', number: '02', label: 'Próximos eventos', to: '/conoce-dicis/eventos' },
+  { key: 'eventos', number: '02', label: 'Eventos UG', to: '/conoce-dicis/eventos' },
+  { key: 'grupos', number: '03', label: 'Grupos organizados', to: '/conoce-dicis/grupos-organizados' },
 ] satisfies Array<{ key: ConoceDicisSectionKey, number: string, label: string, to: string }>
 </script>
 
@@ -19,7 +20,7 @@ const conoceDicisNavigation = [
         <p class="conoce-dicis-eyebrow">Universidad de Guanajuato · Campus Irapuato-Salamanca</p>
         <h1 id="conoce-dicis-page-title">Conoce DICIS</h1>
         <p class="conoce-dicis-hero__description">
-          Calendario académico y próximos eventos oficiales.
+          Calendario académico, eventos oficiales y noticias de los grupos organizados.
         </p>
       </div>
     </section>

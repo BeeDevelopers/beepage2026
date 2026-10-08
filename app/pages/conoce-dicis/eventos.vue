@@ -2,13 +2,9 @@
 import { conoceDicisOfficialEvents, conoceDicisOfficialEventsCalendar } from '../../utils/conoceDicisCalendar'
 
 useSeoMeta({
-  title: 'Próximos eventos UG · agosto–diciembre 2026 | Conoce DICIS',
-  description: 'Próximos eventos publicados por la Universidad de Guanajuato para el semestre agosto-diciembre de 2026.',
+  title: 'Eventos UG · agosto–diciembre 2026 | Conoce DICIS',
+  description: 'Eventos publicados por la Universidad de Guanajuato para el semestre agosto-diciembre de 2026.',
 })
-
-const conoceDicisToday = new Date()
-const conoceDicisTodayIsoDate = `${conoceDicisToday.getFullYear()}-${String(conoceDicisToday.getMonth() + 1).padStart(2, '0')}-${String(conoceDicisToday.getDate()).padStart(2, '0')}`
-const conoceDicisUpcomingEvents = computed(() => conoceDicisOfficialEvents.filter(conoceDicisEvent => conoceDicisEvent.end.slice(0, 10) >= conoceDicisTodayIsoDate))
 </script>
 
 <template>
@@ -16,12 +12,12 @@ const conoceDicisUpcomingEvents = computed(() => conoceDicisOfficialEvents.filte
     <section aria-labelledby="conoce-dicis-events-title">
       <div class="conoce-dicis-events-heading">
         <p class="conoce-dicis-events-eyebrow">Agenda institucional</p>
-        <h2 id="conoce-dicis-events-title">Próximos eventos UG · agosto–diciembre 2026</h2>
-        <p>Eventos oficiales con fecha actual o posterior en el semestre, ordenados por fecha.</p>
+        <h2 id="conoce-dicis-events-title">Eventos UG · agosto–diciembre 2026</h2>
+        <p>Eventos publicados en el calendario oficial de la Universidad de Guanajuato para este semestre, ordenados por fecha.</p>
       </div>
 
       <ol class="conoce-dicis-events-list">
-        <li v-for="conoceDicisOfficialEvent in conoceDicisUpcomingEvents" :key="conoceDicisOfficialEvent.source">
+        <li v-for="conoceDicisOfficialEvent in conoceDicisOfficialEvents" :key="conoceDicisOfficialEvent.source">
           <article class="conoce-dicis-event-card">
             <div class="conoce-dicis-event-card__date">
               <span>{{ conoceDicisOfficialEvent.dateLabel }}</span>
@@ -48,7 +44,6 @@ const conoceDicisUpcomingEvents = computed(() => conoceDicisOfficialEvents.filte
           </article>
         </li>
       </ol>
-      <p v-if="!conoceDicisUpcomingEvents.length" class="conoce-dicis-events-empty">No hay próximos eventos oficiales publicados para este semestre.</p>
 
       <a class="conoce-dicis-events-source-link" :href="conoceDicisOfficialEventsCalendar" target="_blank" rel="noopener noreferrer">
         Abrir calendario oficial de eventos UG <span aria-hidden="true">↗</span>
