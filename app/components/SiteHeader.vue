@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const open = ref(false)
+const currentSiteRoute = useRoute()
+const isConoceDicisHeader = computed(() => currentSiteRoute.path.startsWith('/conoce-dicis'))
 
 const pendingPages = [
   { label: 'Conócenos más', disabled: true },
   { label: 'Beneficios de tu correo', disabled: true },
-  { label: 'Conoce DICIS', disabled: true },
+  { label: 'Conoce DICIS', to: '/conoce-dicis' },
   { label: 'Galería', disabled: true },
 ]
 
@@ -22,6 +24,7 @@ const navigationUi = {
     title="BeeDevelopers"
     mode="drawer"
     class="site-header"
+    :class="{ 'conoce-dicis-site-header': isConoceDicisHeader }"
     :ui="{
       root: 'site-header static top-auto z-50 bg-transparent border-0 h-auto backdrop-blur-0',
       container: 'header-inner',

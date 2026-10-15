@@ -172,6 +172,9 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 3px s
   .site-logo img:last-child { width: 155px; }
   .home-hero { min-height: 560px; }
   .footer-grid { gap: 28px; }
+  .conoce-dicis-site-header .menu-toggle { display: none; }
+  .conoce-dicis-site-header .header-actions { display: flex; align-items: center; }
+  .conoce-dicis-site-header .header-actions > .bee-button { display: none; }
 }
 
 @media (max-width: 900px) {
