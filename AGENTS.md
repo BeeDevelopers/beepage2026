@@ -11,6 +11,7 @@
 - `app/app.vue` contiene el marco raíz; conservar las funciones de `UApp`, `NuxtPage` y `NuxtRouteAnnouncer` al modificarlo.
 - Las rutas viven en `app/pages/`; el inicio existente es `app/pages/index.vue`. Crear componentes, layouts, composables o plugins dentro de `app/` solo cuando la tarea lo requiera.
 - Mantener los estilos globales en `app/assets/css/main.css`, utilizando Tailwind y los estilos de Nuxt UI.
+- Seguir `DESIGN.md` para colores, tipografía, patrones de componentes y estructura de la página de inicio; actualizarlo cuando cambie una decisión de diseño.
 - Guardar imágenes públicas en `public/images/`, referenciarlas como `/images/...` y aprovechar `NuxtImg` para su optimización.
 - Respetar `<script setup lang="ts">`, Composition API, autoimportaciones de Nuxt y las convenciones de formato del código existente. Mantener el idioma español y los metadatos de página mediante `useSeoMeta` cuando corresponda.
 - La configuración principal está en `nuxt.config.ts`; TypeScript y ESLint se apoyan en archivos generados en `.nuxt`. No editar esos archivos generados.
