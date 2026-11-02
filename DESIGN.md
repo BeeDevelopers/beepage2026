@@ -172,6 +172,15 @@ Orden, fondo y componente Vue correspondiente. «Nuevo» significa crearlo en `a
 
 Las imágenes se sirven con `NuxtImg` (`format="webp"`, `loading="lazy"` salvo la del hero) desde `/images/...`.
 
+### Módulo Conoce DICIS
+
+- Mantener el módulo aislado en sus rutas y componentes con nombres `ConoceDicis*`; no cambiar la página de inicio ni los componentes globales para resolver sus necesidades.
+- El encabezado del módulo usa navy, blanco y amarillo para presentar «CONOCE DICIS» y el mensaje de consulta anual. La navegación propia va en una barra horizontal encima del contenido y enlaza al calendario anual y a los grupos organizados.
+- El calendario anual sigue la lectura de enero a diciembre del calendario semestral oficial de la UG: semanas de lunes a domingo, doce meses en una cuadrícula y fechas sin filtro en blanco. Los filtros por color admiten selección múltiple; las fechas de hoy conservan un contorno negro y cada día abre su detalle.
+- En escritorio, la información lateral va a la izquierda en un panel con desplazamiento propio. Fechas importantes, descansos oficiales, eventos UG y servicio social se abren desde controles accesibles; cada grupo y fecha puede seleccionarse para resaltar sus días en el calendario y consultar el primer día del periodo. Cada fecha o periodo muestra sus días hábiles, calculados de lunes a viernes y descontando los asuetos listados. Los filtros por color van arriba del calendario; en pantallas pequeñas el panel de información queda debajo del calendario.
+- La información lateral reúne fechas importantes, asuetos por contrato colectivo, por ley y locales de Irapuato-Salamanca, además de los periodos de servicio social. Los colores reutilizan la paleta de categorías ya definida en `app/utils/conoceDicisCalendar.ts`.
+- El periodo de receso del 17 al 31 de diciembre se muestra como referencia después de las evaluaciones finales; la fuente semestral no publica fechas exactas de vacaciones.
+
 ## 6. Responsive
 
 - **≥1101 px:** navegación completa en el header (comportamiento actual).
