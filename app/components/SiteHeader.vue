@@ -32,6 +32,7 @@ const navigationUi = {
       right: 'header-actions',
       toggle: 'header-toggle',
       content: 'header-mobile-content',
+      overlay: 'header-mobile-overlay',
       body: 'header-mobile-body',
     }"
   >
@@ -47,7 +48,7 @@ const navigationUi = {
 
     <template #right>
       <UButton to="/#registro" class="bee-button bee-button--pill">
-        Únete a nosotros
+        Únete
       </UButton>
     </template>
 
@@ -62,7 +63,9 @@ const navigationUi = {
         :aria-label="menuOpen ? 'Cerrar menú' : 'Abrir menú'"
         @click="toggle"
       >
-        <span aria-hidden="true">{{ menuOpen ? '✕' : '☰' }}</span>
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path :d="menuOpen ? 'M6 6l12 12M18 6L6 18' : 'M4 7h16M4 12h16M4 17h16'" />
+        </svg>
       </UButton>
     </template>
 
