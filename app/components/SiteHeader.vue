@@ -7,7 +7,7 @@ const pendingPages = [
   { label: 'Conócenos más', disabled: true },
   { label: 'Beneficios de tu correo', disabled: true },
   { label: 'Conoce DICIS', to: '/conoce-dicis' },
-  { label: 'Galería', disabled: true },
+  { label: 'Galería', to: '/galeria' },
 ]
 
 const navigationUi = {

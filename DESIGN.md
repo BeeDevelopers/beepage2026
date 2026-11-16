@@ -181,6 +181,14 @@ Las imágenes se sirven con `NuxtImg` (`format="webp"`, `loading="lazy"` salvo l
 - La información lateral reúne fechas importantes, asuetos por contrato colectivo, por ley y locales de Irapuato-Salamanca, además de los periodos de servicio social. Los colores reutilizan la paleta de categorías ya definida en `app/utils/conoceDicisCalendar.ts`.
 - El periodo de receso del 17 al 31 de diciembre se muestra como referencia después de las evaluaciones finales; la fuente semestral no publica fechas exactas de vacaciones.
 
+### Página Galería
+
+- Ruta `/galeria` (`app/pages/galeria.vue`), construida con utilidades de Tailwind y componentes de Nuxt UI (`UContainer`, `UBreadcrumb`, `UButton`, `USelect`, `UBadge`, `UModal`), sin componentes propios.
+- Estructura: banda navy con panal, migas en 16 px (sin etiqueta de sección, porque ya nombran la página), H1 «Momentos de BeeDevelopers» y contadores → barra de filtros fija (tipo de evento con `aria-pressed` y año) → mosaico → «Cargar más fotos» → banda crema «Comparte tus fotos».
+- Mosaico tipo Pinterest con columnas CSS: 2 columnas en móvil, 3 desde 768 px y 4 desde 1024 px. Las celdas usan cuatro formas (`landscape` 4:3, `square` 1:1, `portrait` 3:4, `tall` 2:3) para mantener el aspecto de collage. La forma se asigna sola: al cargar la foto se detecta su orientación y se alterna entre las dos formas compatibles (horizontal → `landscape`/`square`; vertical → `portrait`/`tall`) según su posición en la lista. El campo opcional `shape` fuerza una forma concreta.
+- Las fotos se listan en `app/utils/galleryPhotos.ts` y los archivos van en `public/images/galeria/`. Mientras el archivo no exista, la celda muestra un marcador con la ruta esperada; evento y año vacíos se muestran como `[Evento]` y `[AÑO]`.
+- Una foto cargada se eleva y hace zoom al pasar el cursor (§2.6) y abre un visor ampliado.
+
 ## 6. Responsive
 
 - **≥1101 px:** navegación completa en el header (comportamiento actual).
@@ -214,4 +222,4 @@ Las imágenes se sirven con `NuxtImg` (`format="webp"`, `loading="lazy"` salvo l
 - [ ] Fuente de datos y próximos eventos reales (sección 8 y chip del hero).
 - [ ] Testimonios con autorización de los integrantes (sección 9).
 - [ ] Decisión sobre conservar el volteo de `PhotoCard` dentro del bento.
-- [ ] Destino de «Ver galería completa» (la página Galería todavía no existe).
+- [ ] Fotos, eventos y años reales de la Galería (`app/utils/galleryPhotos.ts`), y canal de «Comparte tus fotos».
