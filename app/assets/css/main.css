@@ -185,6 +185,32 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 3px s
 .sketch-label:not(:first-child) { margin-top: 10px; }
 .sketch-field { height: clamp(46px, 3.2vw, 56px); border: 1.5px dashed var(--bee-input-border); border-radius: 8px; }
 .sketch-button { height: 50px; margin-top: 14px; border-radius: 8px; background: rgb(255 218 74 / 45%); border: 1.5px dashed #e0b100; }
+.registration-form { display: flex; flex-direction: column; gap: 16px; margin-top: 24px; }
+.registration-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.registration-label { color: var(--bee-navy); font-size: 14px; font-weight: 600; line-height: 1.4; }
+.registration-required { color: #c02626; }
+.registration-optional { color: var(--bee-text); font-weight: 400; font-size: 13px; }
+.registration-input { width: 100%; min-height: 46px; padding: 10px 14px; border: 1.5px solid var(--bee-input-border); border-radius: 8px; background: #fff; color: var(--bee-navy); font-family: var(--font-sans); font-size: 15px; line-height: 1.4; transition: border-color 150ms ease, box-shadow 150ms ease; }
+.registration-input::placeholder { color: #8c9aa5; }
+.registration-input:focus-visible { outline: none; border-color: #147ca8; box-shadow: 0 0 0 3px rgb(20 124 168 / 20%); }
+.registration-input.is-invalid { border-color: #c02626; }
+.registration-textarea { min-height: 92px; resize: vertical; }
+.registration-file-input { padding: 8px 12px; cursor: pointer; }
+.registration-file-input::file-selector-button { min-height: 30px; margin-right: 12px; padding: 4px 12px; border: 0; border-radius: 6px; background: var(--bee-surface); color: var(--bee-navy); font-family: var(--font-sans); font-size: 13px; font-weight: 600; cursor: pointer; }
+.registration-hint { margin: 0; color: var(--bee-text); font-size: 12px; line-height: 1.45; }
+.registration-file-preview { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--bee-border); border-radius: 10px; background: var(--bee-surface); }
+.registration-file-thumb { flex: none; width: 48px; height: 48px; border-radius: 8px; object-fit: cover; border: 1px solid var(--bee-border); }
+.registration-file-meta { display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 2px; }
+.registration-file-name { overflow: hidden; color: var(--bee-navy); font-size: 13px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.registration-file-size { color: var(--bee-text); font-size: 12px; }
+.registration-file-remove { flex: none; min-height: 44px; padding: 8px 12px; border: 1px solid var(--bee-input-border); border-radius: 8px; background: #fff; color: var(--bee-navy); font-size: 13px; font-weight: 600; cursor: pointer; }
+.registration-file-remove:hover { border-color: #c02626; color: #b91c1c; }
+.registration-error { margin: 0; color: #b91c1c; font-size: 13px; line-height: 1.4; }
+.registration-feedback { padding: 12px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; line-height: 1.5; }
+.registration-feedback--success { border: 1px solid #86efac; background: #f0fdf4; color: #166534; }
+.registration-feedback--error { border: 1px solid #fca5a5; background: #fef2f2; color: #991b1b; }
+.registration-submit { justify-content: center; width: 100%; min-height: 48px; margin-top: 4px; cursor: pointer; }
+.registration-submit:disabled { opacity: 0.7; cursor: not-allowed; }
 
 @keyframes bee-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 

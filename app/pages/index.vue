@@ -12,6 +12,8 @@ useSeoMeta({
     <HomeActivityMarquee />
     <HomeAbout />
     <HomeHighlights />
-    <HomeRegistrationSection />
+    <HomeRegistrationSection>
+      <HomeRegistrationForm />
+    </HomeRegistrationSection>
   </main>
 </template>
