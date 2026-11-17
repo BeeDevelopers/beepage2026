@@ -11,6 +11,9 @@ export default defineNuxtConfig({
   ],
   css: ['~/assets/css/main.css'],
   colorMode: { preference: 'light', fallback: 'light' },
+  fonts: {
+    defaults: { weights: [400, 500, 600, 700] },
+  },
   app: {
     head: {
       htmlAttrs: { lang: 'es' },

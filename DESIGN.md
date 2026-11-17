@@ -3,27 +3,28 @@
 Fuente de verdad visual para el sitio. Los agentes y personas que implementen o iteren la interfaz deben leer este archivo antes de crear o modificar componentes, y actualizarlo cuando una decisión de diseño cambie.
 
 - **Referencia visual:** canvas «BeeDevelopers Inicio — Propuesta» (https://claude.ai/artifact/8Rz2oh1CewCbUqLs3hFwgZ#play-15dd8cd198dd). Es privado hasta que su dueño lo comparta.
-- **Estado:** propuesta aprobada para la página de inicio; **pendiente de implementar** en Nuxt. El sitio actual todavía usa Arial y el diseño anterior.
+- **Estado:** página de inicio **implementada** en Nuxt a partir de la propuesta, con los ajustes descritos en §5. «Próximos eventos» y «Voces» quedan en pausa hasta tener datos reales.
 - **Alcance:** tokens, patrones de componentes y estructura de la página de inicio. Las reglas técnicas del proyecto viven en `AGENTS.md`.
 
 ## 1. Principios
 
-1. **Comunidad dev, no corporativo.** La identidad mezcla la marca (navy + amarillo) con guiños de código: etiquetas `// sección`, tipografía monoespaciada y una tarjeta de editor en el hero.
-2. **Ritmo por alternancia.** Las secciones alternan fondo blanco, navy y crema para que la página no se sienta plana. Nunca dos secciones seguidas con el mismo fondo, salvo blanco con un cambio claro de patrón.
-3. **Contenido vivo.** Priorizar bloques que cambian con el tiempo (próximos eventos, proyectos recientes, cifras) sobre texto estático.
-4. **El panal como motivo.** El hexágono y el patrón de panal son el elemento gráfico de la marca. Usarlos con moderación: como acento, nunca como relleno de todo el fondo.
-5. **Fotos reales.** Solo fotografías del grupo (`public/images/`). Nada de imágenes de stock ni ilustraciones genéricas.
-6. **Sin datos inventados.** Cifras, fechas y testimonios se dejan como marcadores `[##]`, `[DD MES]` o `[Nombre]` hasta tener datos reales.
+1. **Tecnología + lo social.** En los textos visibles el grupo se nombra siempre «BeeDevelopers», no «la colmena»; el panal queda como motivo gráfico. BeeDevelopers es un grupo estudiantil que mezcla la tecnología con lo social: habilidades blandas (liderazgo, trabajo en equipo, hablar en público), convivencia entre carreras y vinculación con ponentes, empresas y otras universidades. Los textos hablan de crecer como persona, no solo de programar.
+2. **Comunidad dev, no corporativo.** La identidad mezcla la marca (navy + amarillo) con guiños de código: etiquetas `// sección`, tipografía monoespaciada y una tarjeta de editor en el hero.
+3. **Ritmo por alternancia.** Las secciones alternan fondo blanco, navy y crema para que la página no se sienta plana. Nunca dos secciones seguidas con el mismo fondo, salvo blanco con un cambio claro de patrón.
+4. **Contenido vivo.** Priorizar bloques que cambian con el tiempo (próximos eventos, proyectos recientes, cifras) sobre texto estático.
+5. **El panal como motivo.** El hexágono y el patrón de panal son el elemento gráfico de la marca. Usarlos con moderación: como acento, nunca como relleno de todo el fondo.
+6. **Fotos reales.** Solo fotografías del grupo (`public/images/`). Nada de imágenes de stock ni ilustraciones genéricas.
+7. **Sin datos inventados.** Cifras, fechas y testimonios se dejan como marcadores `[##]`, `[DD MES]` o `[Nombre]` hasta tener datos reales.
 
 ## 2. Tokens
 
 ### 2.1 Color
 
-Los cinco primeros ya existen en `app/assets/css/main.css`; los demás son nuevos y deben agregarse al mismo bloque `:root`.
+Todos viven en el bloque `:root` de `app/assets/css/main.css`.
 
 | Token | Valor | Uso |
 |---|---|---|
-| `--bee-navy` | `#073354` | Títulos sobre claro, fondo de «¿Qué hacemos?» y footer, botones outline |
+| `--bee-navy` | `#073354` | Títulos sobre claro, fondo del footer, botones outline |
 | `--bee-header` | `#052a45` | Header, hero, sección «Únete», texto sobre amarillo |
 | `--bee-yellow` | `#ffda4a` | Acento: CTA principal, hexágonos, etiquetas, puntos de estado |
 | `--bee-text` | `#52606a` | Texto de cuerpo sobre blanco y crema |
@@ -41,10 +42,9 @@ Los cinco primeros ya existen en `app/assets/css/main.css`; los demás son nuevo
 Reglas:
 
 - **Amarillo nunca como color de texto sobre blanco o crema** (contraste insuficiente). Para texto amarillo sobre claro usar `--bee-yellow-ink`. En el mockup la etiqueta `// sección` usa `#9a7a00`, que no llega a 4.5:1 en 13 px; al implementar, usar `#8a6d00`.
-- Sobre navy, el amarillo sí puede ser texto (etiquetas `// qué hacemos`, frase destacada del hero).
+- Sobre navy, el amarillo sí puede ser texto (etiqueta `// únete`, frase destacada del hero).
 - Texto sobre amarillo: siempre `--bee-header`.
 - Números decorativos sobre `--bee-navy-raised` (`01`, `02`, `03`): usar al menos `#9db8cc` para cumplir 3:1.
-- Los colores del stack (Vue, Nuxt, etc.) solo aparecen en el pequeño rombo de cada chip, nunca como color de sección.
 
 ### 2.2 Tipografía
 
@@ -60,16 +60,17 @@ Reglas:
 | Secundario | IBM Plex Sans | 400–500 | 13–15 px | 1.6 |
 | Etiqueta de sección | JetBrains Mono | 400 | 13 px, `letter-spacing: .08em` | — |
 | Chip / tag | JetBrains Mono | 600 | 11 px, mayúsculas, `letter-spacing: .06em` | — |
-| Código (tarjeta del hero, stack) | JetBrains Mono | 400 | 14 px | 1.75 |
+| Código (tarjeta del hero, chips de actividad) | JetBrains Mono | 400 | 14 px | 1.75 |
 
-- Reemplazar `--font-sans: Arial, Helvetica, sans-serif` en el bloque `@theme` por IBM Plex Sans y agregar `--font-display` (Space Grotesk) y `--font-mono` (JetBrains Mono).
-- `@nuxt/fonts` ya viene incluido con `@nuxt/ui`: basta con declarar las familias en CSS para que se descarguen y sirvan localmente. **No** agregar `<link>` a Google Fonts ni dependencias nuevas.
+- Las familias se declaran en el bloque `@theme` de `main.css`: `--font-sans` (IBM Plex Sans), `--font-display` (Space Grotesk) y `--font-mono` (JetBrains Mono). `h1`–`h3` usan `--font-display` de forma global.
+- `@nuxt/fonts` ya viene incluido con `@nuxt/ui` y descarga las familias declaradas en CSS para servirlas localmente. Los pesos 500 y 600 se piden en `fonts.defaults.weights` de `nuxt.config.ts` (por defecto solo baja 400 y 700). **No** agregar `<link>` a Google Fonts ni dependencias nuevas.
 - No usar Inter, Roboto ni Arial.
 
 ### 2.3 Espaciado y layout
 
-- Contenedor de contenido: `max-width: 1180px`; hero y header: `1280px`. Margen lateral: `24px`.
-- Padding vertical de sección: `96px` en escritorio, `56px` en móvil (≤600 px).
+- **Ancho completo en monitores.** El contenido crece hasta `--bee-content-max` (1760 px) con un margen lateral fluido `--bee-gutter: clamp(20px, 4vw, 80px)`. Header, hero, cifras, secciones y footer comparten esas dos variables, así que sus bordes coinciden. En un monitor de 1920 px el contenido ocupa de borde a borde menos el margen.
+- **Escala fluida.** Tamaños de texto, rellenos y filas del bento usan `clamp(mínimo, vw, máximo)`: en laptop conservan los valores de las tablas de este documento (que son el mínimo) y en monitores grandes crecen hasta el máximo (H2 hasta 58 px, frase del hero hasta 62 px, cuerpo hasta 21–22 px). No fijar tamaños en px sueltos en secciones nuevas.
+- Padding vertical de sección: `clamp(56px, 7vw, 128px)`.
 - Separación encabezado de sección → contenido: `40–48px`.
 - Gaps: tarjetas `24px`, bento `18px`, filas de eventos `14px`, listas de valores `14px`.
 - Encabezado de sección: etiqueta `// sección` arriba, H2 debajo con `margin-top: 10px`. Cuando hay descripción corta, va a la derecha en escritorio (`flex-wrap`, `justify-content: space-between`, `align-items: flex-end`) y debajo en móvil.
@@ -98,7 +99,7 @@ Reglas:
 
 - **Elevación de tarjeta:** `translateY(-4px)` + sombra `hover`, 200 ms `ease`.
 - **Zoom de foto:** `scale(1.05)` en la imagen dentro de la celda, 500 ms.
-- **Marquesina del stack:** `translateX(0 → -50%)` en 32 s, lineal e infinita; la lista se duplica para que el ciclo sea continuo.
+- **Marquesina de actividades:** `translateX(0 → -50%)` en 40 s, lineal e infinita; la lista se duplica para que el ciclo sea continuo (la copia lleva `aria-hidden`) y se pausa al pasar el cursor. Con movimiento reducido se convierte en una lista estática centrada.
 - **Volteo de `PhotoCard`:** se conserva tal como está.
 - Todo movimiento se desactiva con `@media (prefers-reduced-motion: reduce)`.
 
@@ -112,6 +113,7 @@ SVG `<pattern>` de 56×100 con este trazo:
 <path d="M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100" fill="none" stroke="#ffda4a" stroke-width="1.5" />
 ```
 
+- Componente `HoneycombPattern.vue`: dibuja el patrón con `currentColor` y un `id` único por instancia; cada sección lo posiciona y atenúa con su propia clase.
 - En el hero: ocupa el 55 % derecho, `opacity: .16`, con máscara que lo desvanece hacia la izquierda.
 - En «Únete»: cubre la sección completa con `opacity: .07`.
 - Siempre decorativo: `aria-hidden="true"`.
@@ -120,12 +122,13 @@ SVG `<pattern>` de 56×100 con este trazo:
 
 Polígono base en `viewBox="0 0 56 64"`: `points="28,2 54,17 54,47 28,62 2,47 2,17"`.
 
-- Relleno amarillo con ícono navy de trazo de 2.6–3 px dentro: insignia de las tarjetas de «¿Qué hacemos?».
-- Grande (140×160) con `opacity: .55` detrás del collage de «Nosotros».
+- Relleno amarillo con ícono navy de trazo de 2.6–3 px dentro: insignia de la tarjeta sobre navy (sin uso actual).
+- Collage de «Nosotros»: dos hexágonos grandes (uno de contorno amarillo y uno relleno al 60 %) asoman arriba a la izquierda de la foto principal, y dos pequeños (navy al 12 % y contorno `#e0b100`) ocupan el hueco bajo la foto. Las fotos se superponen para que el conjunto se lea como collage.
+- Viñeta de los chips de actividad: hexágono de 14×16 relleno con el color propio de cada actividad.
 
 ### Etiqueta de sección
 
-Texto en JetBrains Mono con forma de comentario de código: `// sobre nosotros`, `// qué hacemos`, `// lo que hemos hecho`, `// agenda`, `// voces de la colmena`, `// únete`. Siempre en minúsculas.
+Texto en JetBrains Mono con forma de comentario de código: `// sobre nosotros`, `// lo que hemos hecho`, `// únete`. Siempre en minúsculas.
 
 ### Íconos
 
@@ -139,18 +142,18 @@ Texto en JetBrains Mono con forma de comentario de código: `// sobre nosotros`,
 | **Botón secundario sobre oscuro** | Transparente, borde `rgb(255 255 255 / 45%)`, texto blanco, 500. |
 | **Botón outline sobre claro** | Borde y texto `--bee-navy`, 600, 14 px, alto mínimo 44 px. |
 | **Pill de header** | La `.bee-button--pill` existente, alto mínimo 44 px. |
-| **Chip «Próximo evento»** | Pill con fondo `rgb(255 218 74 / 14%)`, borde `rgb(255 218 74 / 45%)`, texto `#ffe68a` en mono 13 px, punto amarillo con halo. Enlaza a `#eventos`. |
+| **Distintivo del hero** | Línea editorial sin fondo ni borde, en mono mayúsculas con `letter-spacing: .14em`: hexágono de contorno amarillo con núcleo relleno + «Grupo estudiantil» en amarillo + filete amarillo de 1 px + «DICIS · Universidad de Guanajuato» en `--bee-text-on-hero`. Sustituye a la pill con punto, que se veía genérica. El filete se oculta en ≤600 px. |
 | **Tag** | Pill amarilla, texto `--bee-header`, mono 11 px en mayúsculas. Se usa en el bento. |
-| **Filtro** | Botón pill de 40 px de alto; el activo usa fondo navy con texto blanco y `aria-pressed="true"`. |
-| **Tarjeta de código** | Fondo `rgb(4 26 43 / 88%)`, borde `rgb(255 255 255 / 12%)`, barra con tres puntos y nombre de archivo `colmena.ts`, código en mono 14 px con resaltado de sintaxis estilo Material. Es decorativa: el texto debe poder leerse, pero no es contenido esencial. |
-| **Franja de cifras** | Tarjeta blanca de 4 columnas (`auto-fit, minmax(200px, 1fr)`) montada `-78px` sobre el hero; separadores verticales `#eef1f4`. El `+` de la primera cifra va en `#e0b100`. |
-| **Chip de stack** | Pill `#f4f6f8` con borde `#e3e8ec`, texto navy mono 14 px y rombo de 8 px con el color de la tecnología. |
-| **Tarjeta sobre navy** | Fondo `--bee-navy-raised`, borde `--bee-navy-line`, padding 32 px, radio 16 px; insignia hexagonal + número `01` arriba, H3 blanco y cuerpo `--bee-text-on-dark`. |
+| **Filtro** | Botón pill de 44 px de alto; el activo usa fondo navy con texto blanco y `aria-pressed="true"`. |
+| **Tarjeta de código** | Fondo `rgb(4 26 43 / 88%)`, borde `rgb(255 255 255 / 12%)`, barra con tres puntos y nombre de archivo `beedevelopers.ts`, código en mono 14 px con resaltado de sintaxis estilo Material. Es decorativa: el texto debe poder leerse, pero no es contenido esencial. |
+| **Franja de cifras** | Tarjeta blanca de 4 columnas (2×2 en móvil) montada `-78px` sobre el hero; separadores `#eef1f4`. Se marca como lista de definiciones (`dl`). El `+` de la primera cifra va en `#e0b100`. |
+| **Chip de actividad** | Pill `#f4f6f8` con borde `#e3e8ec`, texto navy mono 14 px y viñeta hexagonal con un color distinto por actividad (definido junto a cada nombre en `HomeActivityMarquee.vue`). El color solo vive en la viñeta, nunca en el texto ni en el fondo. Nombra actividades del grupo, no tecnologías. |
+| **Tarjeta sobre navy** (sin uso actual) | Fondo `--bee-navy-raised`, borde `--bee-navy-line`, padding 32 px, radio 16 px; insignia hexagonal + número `01` arriba, H3 blanco y cuerpo `--bee-text-on-dark`. |
 | **Celda del bento** | Foto a sangre con degradado inferior a `rgb(5 42 69 / 92%)`, tag, título blanco; solo la celda destacada muestra descripción. |
 | **Fila de evento** | Tarjeta blanca con borde `#efe6c8`: bloque de fecha navy de 72×76 (día en Space Grotesk 26 px y mes en mono amarillo) + tipo, título y metadatos + botón outline «Detalles». |
 | **Testimonio** | `figure` con fondo `--bee-surface`, comillas SVG amarillas, cita de 17 px, avatar circular navy con iniciales amarillas, nombre y «Carrera · Semestre». |
 | **Pasos** | Lista ordenada vertical: círculo amarillo de 44 px con número y línea `--bee-navy-line` que conecta los pasos. |
-| **Panel de formulario** | Tarjeta blanca de radio 20 px y sombra `floating` sobre la sección navy; inputs de 46 px con `label` visible. |
+| **Panel de formulario** | Tarjeta blanca de radio 20 px y sombra `floating` sobre la sección navy; inputs de 46 px con `label` visible. Mientras no exista el formulario, el `slot` muestra un boceto no interactivo (barras y campos con borde punteado, `aria-hidden`). |
 
 ## 5. Página de inicio
 
@@ -158,17 +161,18 @@ Orden, fondo y componente Vue correspondiente. «Nuevo» significa crearlo en `a
 
 | # | Sección | Fondo | Componente | Contenido y notas |
 |---|---|---|---|---|
-| 1 | Header | `--bee-header` | `SiteHeader.vue` (sin cambios de estructura) | Conservar los elementos reales de `pendingPages`; la navegación del mockup es ilustrativa. |
-| 2 | Hero | Foto + degradado navy 97 % → 62 % + panal | `HomeHero.vue` (modificar) | Chip de próximo evento, logotipo, frase «Aprende construyendo. *Construye en comunidad.*» (la segunda parte en amarillo), descripción, botones «Únete a BeeDevelopers» (`/#registro`) y «Ver proyectos» (`/#proyectos`), tarjeta de código a la derecha. Padding inferior de 150 px para dejar espacio a la franja de cifras. |
-| 3 | Cifras | Blanco (superpuesta al hero) | `HomeStats.vue` (nuevo) | Integrantes, eventos organizados, hackatones y año de fundación. **Datos pendientes.** |
-| 4 | Stack | Blanco | `HomeTechStack.vue` (nuevo) | Marquesina «Con lo que construimos». La lista del mockup es un ejemplo: confirmar las tecnologías reales con el equipo. |
-| 5 | Nosotros | Blanco | `HomeAbout.vue` (modificar) | Collage: `Nosotros.jpeg` + `Proyectos/polilinker2.JPG` superpuesta, hexágono detrás. H2 «Una colmena donde la teoría se vuelve práctica», párrafo y tres valores con check. |
-| 6 | Qué hacemos | `--bee-navy` | `HomeActivities.vue` (modificar) | Mismos tres textos actuales, ahora con insignia hexagonal y numeración. |
-| 7 | Proyectos | Blanco | `HomeHighlights.vue` (modificar) | Bento de 4 columnas con filas de 240 px: Space Apps destacado (2×2), DevWeek y Hackatón · Colaboración anchos (2×1), el resto 1×1, más una celda amarilla «Ver galería completa». Filtros: Todos / Hackatón / Ponencia / Competencia. Decidir si las celdas conservan el volteo de `PhotoCard` o solo muestran el tag. |
-| 8 | Próximos eventos | `--bee-cream` | `HomeEvents.vue` (nuevo) | Tres eventos y el enlace «Ver calendario completo» a `/conoce-dicis/calendario`. Los datos deben salir de un archivo en `app/utils/` con la forma de `conoceDicisCalendar.ts`, no escritos dentro del componente. |
-| 9 | Voces | Blanco | `HomeVoices.vue` (nuevo) | Tres testimonios reales. **Datos pendientes.** |
-| 10 | Únete | `--bee-header` + panal | `HomeRegistrationSection.vue` (modificar) | Tres pasos a la izquierda y el panel del formulario a la derecha; el formulario sigue entrando por el `slot` (responsable: José Eduardo). Mantener `id="registro"`. |
-| 11 | Footer | `--bee-navy` | `SiteFooter.vue` | Sin cambios. |
+| 1 | Header | `--bee-header` | `SiteHeader.vue` | Conserva los elementos reales de `pendingPages`. Pill «Únete» desde 520 px; botón de menú hasta 1100 px, que abre un panel inferior con la navegación en columna. |
+| 2 | Hero | Foto + degradado navy 97 % → 62 % + panal | `HomeHero.vue` | Distintivo «Grupo estudiantil — DICIS · Universidad de Guanajuato», logotipo, frase «Aprende construyendo. *Construye en comunidad.*» (la segunda parte en amarillo), descripción con el enfoque tecnología + social, botones «Únete a BeeDevelopers» (`/#registro`) y «Ver proyectos» (`/#proyectos`), tarjeta de código a la derecha. Padding inferior amplio para dejar espacio a la franja de cifras. |
+| 3 | Cifras | Blanco (superpuesta al hero) | `HomeStats.vue` | 20+ integrantes activos, 50+ eventos organizados, 10+ hackatones en equipo, construyendo desde 2018. |
+| 4 | Actividades | Blanco | `HomeActivityMarquee.vue` | Marquesina «Lo que vivimos en BeeDevelopers» con actividades del grupo (hackatones, talleres, ponencias, DevWeek, Hack Day DICIS, NASA Space Apps, mentorías, proyectos en equipo, convivencias, networking). Lleva `id="actividades"`, al que enlaza el footer. |
+| 5 | Nosotros | Blanco | `HomeAbout.vue` | Collage: `Nosotros.jpeg` + `Proyectos/polilinker2.JPG` superpuesta, hexágonos detrás. H2 «En BeeDevelopers la tecnología se vuelve comunidad», párrafo y tres valores con check: habilidades blandas, convivencia y vinculación. |
+| 6 | Proyectos | `--bee-cream` | `HomeHighlights.vue` | Bento de 4 columnas con filas de 240 px: Space Apps destacado (2×2), DevWeek y Hackatón · Colaboración anchos (2×1), el resto 1×1, más una celda amarilla «Ver galería completa» que enlaza a `/galeria`. Filtros: Todos / Hackatón / Ponencia / Competencia. Las celdas muestran tag y título, sin volteo. |
+| 7 | Únete | `--bee-header` + panal | `HomeRegistrationSection.vue` | Tres pasos a la izquierda y el panel del formulario a la derecha; el formulario entrará por el `slot` (responsable: José Eduardo) y por ahora se muestra el boceto. Mantener `id="registro"`. |
+| 8 | Footer | `--bee-navy` | `SiteFooter.vue` | Sin cambios. |
+
+**Retirada:** «Qué hacemos» (tres tarjetas navy con insignia hexagonal). Se quitó porque el carrusel de actividades y «Nosotros» ya cuentan lo mismo; `HomeActivities.vue` se eliminó. Proyectos usa fondo crema para no dejar dos secciones blancas seguidas.
+
+**En pausa:** «Próximos eventos» (`HomeEvents.vue`, fondo `--bee-cream`, datos en `app/utils/`) y «Voces» (`HomeVoices.vue`). Sus patrones siguen descritos en §4 para cuando haya datos reales; al reincorporarlos van entre Proyectos y Únete.
 
 Las imágenes se sirven con `NuxtImg` (`format="webp"`, `loading="lazy"` salvo la del hero) desde `/images/...`.
 
@@ -181,12 +185,22 @@ Las imágenes se sirven con `NuxtImg` (`format="webp"`, `loading="lazy"` salvo l
 - La información lateral reúne fechas importantes, asuetos por contrato colectivo, por ley y locales de Irapuato-Salamanca, además de los periodos de servicio social. Los colores reutilizan la paleta de categorías ya definida en `app/utils/conoceDicisCalendar.ts`.
 - El periodo de receso del 17 al 31 de diciembre se muestra como referencia después de las evaluaciones finales; la fuente semestral no publica fechas exactas de vacaciones.
 
+### Página Galería
+
+- Ruta `/galeria` (`app/pages/galeria.vue`), construida con utilidades de Tailwind y componentes de Nuxt UI (`UContainer`, `UBreadcrumb`, `UButton`, `USelect`, `UBadge`, `UModal`), sin componentes propios.
+- Estructura: banda navy con panal, migas en 16 px (sin etiqueta de sección, porque ya nombran la página), H1 «Momentos de BeeDevelopers» y contadores → barra de filtros fija (tipo de evento con `aria-pressed` y año) → mosaico → «Cargar más fotos» → banda crema «Comparte tus fotos».
+- Mosaico tipo Pinterest con columnas CSS: 2 columnas en móvil, 3 desde 768 px y 4 desde 1024 px. Las celdas usan cuatro formas (`landscape` 4:3, `square` 1:1, `portrait` 3:4, `tall` 2:3) para mantener el aspecto de collage. La forma se asigna sola: al cargar la foto se detecta su orientación y se alterna entre las dos formas compatibles (horizontal → `landscape`/`square`; vertical → `portrait`/`tall`) según su posición en la lista. El campo opcional `shape` fuerza una forma concreta.
+- Las fotos se listan en `app/utils/galleryPhotos.ts` y los archivos van en `public/images/galeria/`. Mientras el archivo no exista, la celda muestra un marcador con la ruta esperada; evento y año vacíos se muestran como `[Evento]` y `[AÑO]`.
+- Una foto cargada se eleva y hace zoom al pasar el cursor (§2.6) y abre un visor ampliado.
+
 ## 6. Responsive
 
-- **≥1101 px:** navegación completa en el header (comportamiento actual).
+- **≥1101 px:** navegación completa en el header.
+- **≤1100 px:** la navegación pasa al panel inferior. El botón de menú vive dentro de `.header-actions`, así que ese contenedor nunca debe ocultarse: en pantallas chicas se oculta solo la pill.
+- **<520 px:** la pill «Únete» del header se oculta (sigue disponible dentro del menú).
 - **≤900 px:** las columnas de «Nosotros», «Eventos» y «Únete» se apilan (`flex-wrap` con `flex: 1 1 420–480px`). La tarjeta de código pasa debajo del texto del hero.
-- **≤760 px:** el bento pasa a 2 columnas con filas de 200 px y todas las celdas a ancho completo; la franja de cifras deja de superponerse al hero (`margin-top: 0`).
-- **≤600 px:** padding de sección de 56 px; las cifras quedan en 1–2 columnas por `auto-fit`.
+- **≤760 px:** el bento pasa a 2 columnas con filas de 170 px y conserva sus proporciones (destacada 2×2, anchas 2×1, chicas 1×1) para mantener el aspecto de collage; la franja de cifras pasa a 2×2 y deja de superponerse al hero (`margin-top: 0`).
+- **≤600 px:** padding de sección de 56 px con margen lateral de 20 px; los botones del hero ocupan el ancho completo.
 - Sin scroll horizontal en ningún ancho. Probar a 375 px, 768 px y 1440 px.
 
 ## 7. Accesibilidad
@@ -202,16 +216,15 @@ Las imágenes se sirven con `NuxtImg` (`format="webp"`, `loading="lazy"` salvo l
 ## 8. Implementación en este repositorio
 
 - Los tokens van en `app/assets/css/main.css`: colores en `:root` y familias tipográficas en `@theme`. No crear archivos CSS paralelos.
-- Seguir el estilo actual: clases semánticas en kebab-case (`.home-stats`, `.stat-card`) con estilos en `main.css` y la prop `:ui` de los componentes de Nuxt UI para conectar slots, como en los componentes `Home*` existentes.
-- Reutilizar `UPageSection`, `UPageHero`, `UCard`, `UButton`, `UContainer` y `NuxtImg` antes de escribir HTML propio.
+- Seguir el estilo actual: clases semánticas en kebab-case (`.home-stats`, `.bento-cell`) con estilos en `main.css`. Las secciones de inicio comparten `.home-section`, `.home-container`, `.section-head`, `.section-label` y `.section-heading`.
+- Las secciones `Home*` usan HTML semántico propio porque su maquetación (collage, bento, franja superpuesta) no encaja en los slots de `UPageSection`/`UPageHero`. Reutilizar `UButton`, `NuxtImg`, `NuxtLink` y `HoneycombPattern`, y la prop `:ui` cuando sí se use un componente de Nuxt UI (header, footer).
 - No instalar dependencias para fuentes, íconos ni animaciones; todo lo descrito se resuelve con CSS, SVG y los módulos ya instalados.
 - Validar con `pnpm lint` y `pnpm typecheck` después de cada cambio, y con `pnpm build` si cambia configuración.
 
 ## 9. Pendientes
 
-- [ ] Cifras reales del grupo (sección 3).
-- [ ] Lista definitiva del stack tecnológico (sección 4).
-- [ ] Fuente de datos y próximos eventos reales (sección 8 y chip del hero).
-- [ ] Testimonios con autorización de los integrantes (sección 9).
-- [ ] Decisión sobre conservar el volteo de `PhotoCard` dentro del bento.
-- [ ] Destino de «Ver galería completa» (la página Galería todavía no existe).
+- [ ] Fuente de datos y próximos eventos reales para reincorporar «Próximos eventos» y el chip del hero.
+- [ ] Testimonios con autorización de los integrantes para reincorporar «Voces».
+- [ ] Formulario de registro real en el `slot` de «Únete».
+- [ ] `PhotoCard.vue` y sus estilos ya no se usan en inicio: decidir si se eliminan o se reutilizan en otra página.
+- [ ] Fotos, eventos y años reales de la Galería (`app/utils/galleryPhotos.ts`), y canal de «Comparte tus fotos».
