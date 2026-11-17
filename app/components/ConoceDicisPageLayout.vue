@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Navegación y encabezado compartidos solo por las páginas Conoce DICIS.
-type ConoceDicisSectionKey = 'calendario' | 'grupos'
+type ConoceDicisSectionKey = 'calendario' | 'grupos' | 'accesos' | 'tramites'
 
 const conoceDicisLayoutProps = defineProps<{
   active?: ConoceDicisSectionKey
@@ -9,6 +9,8 @@ const conoceDicisLayoutProps = defineProps<{
 const conoceDicisNavigation = [
   { key: 'calendario', number: '01', label: 'Calendario anual', to: '/conoce-dicis/calendario' },
   { key: 'grupos', number: '02', label: 'Grupos organizados', to: '/conoce-dicis/grupos-organizados' },
+  { key: 'accesos', number: '03', label: 'Accesos rápidos', to: '/conoce-dicis/accesos-rapidos' },
+  { key: 'tramites', number: '04', label: 'Trámites', to: '/conoce-dicis/tramites' },
 ] satisfies Array<{ key: ConoceDicisSectionKey, number: string, label: string, to: string }>
 </script>
 
@@ -23,7 +25,7 @@ const conoceDicisNavigation = [
           <span>Organiza tu semestre.</span>
         </p>
         <p class="conoce-dicis-hero__description">
-          Fechas académicas, días de asueto y servicio social de la Universidad de Guanajuato para 2026.
+          Calendario, grupos organizados, accesos institucionales y trámites para la comunidad estudiantil de DICIS Irapuato-Salamanca.
         </p>
       </div>
     </section>
@@ -181,6 +183,8 @@ const conoceDicisNavigation = [
   }
 
   .conoce-dicis-navigation {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 7px;
     padding: 9px 12px;
   }
@@ -188,7 +192,6 @@ const conoceDicisNavigation = [
   .conoce-dicis-navigation__link {
     min-width: 0;
     min-height: 42px;
-    flex: 1;
     justify-content: center;
     gap: 7px;
     padding: 8px 9px;

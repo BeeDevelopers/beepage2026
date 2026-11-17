@@ -80,7 +80,7 @@ const conoceDicisCalendarOfficialEvents = conoceDicisCampusIrapuatoSalamancaEven
   end: event.end.slice(0, 10),
 }))
 
-const conoceDicisCalendarFilterCategories = computed(() => new Set(
+const conoceDicisCalendarFilterCategories = computed<Set<ConoceDicisCalendarCategory>>(() => new Set(
   conoceDicisCalendarFilterGroups
     .filter(group => conoceDicisCalendarActiveFilterIds.value.includes(group.id))
     .flatMap(group => group.categories),
