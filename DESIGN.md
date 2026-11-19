@@ -193,6 +193,15 @@ Las imágenes se sirven con `NuxtImg` (`format="webp"`, `loading="lazy"` salvo l
 - Las fotos se listan en `app/utils/galleryPhotos.ts` y los archivos van en `public/images/galeria/`. Mientras el archivo no exista, la celda muestra un marcador con la ruta esperada; evento y año vacíos se muestran como `[Evento]` y `[AÑO]`.
 - Una foto cargada se eleva y hace zoom al pasar el cursor (§2.6) y abre un visor ampliado.
 
+### Página Conócenos más
+
+- Ruta `/conocenos` (`app/pages/conocenos.vue`), Issue #5. Los textos y listas viven en el `script` de la página.
+- Estructura: encabezado navy con panal (migas, H1 «Somos BeeDevelopers», intro y botón «Únete») → índice de secciones fijo (barra blanca con anclas; las secciones llevan `scroll-mt-24`) → Historia (crema) → Lo que nos mueve: misión, visión y objetivos (blanco) → Valores (crema) → Lo que hacemos juntos: actividades (navy) → Comunidad (crema) → Preguntas frecuentes con `UAccordion` (blanco) → Únete (navy + panal).
+- Reutiliza `.home-section`, `.home-container`, `.section-head`, `.section-label` y `.section-heading` para compartir márgenes y escala con el inicio.
+- **Línea de tiempo** (`.timeline` en `main.css`): un hexágono amarillo de 72×82 por hito, con borde blanco de 3 px y el año en mono `--bee-header`, unidos por una línea `--bee-input-border` de 2 px. Cada hito va en una tarjeta blanca (borde `--bee-border`, radio 16 px, `.lift` al pasar el cursor). Desde 1280 px es horizontal y ocupa todo el ancho: una columna por hito, hexágonos sobre la línea y tarjetas alternadas arriba (impares) y abajo (pares), cada una de dos columnas de ancho (la primera y la última, de columna y media y alineadas al borde) y unida a su hexágono por un conector de 2 px. Por debajo de 1280 px es vertical, con la línea a la izquierda y las tarjetas a su derecha; desde 600 px el hexágono baja a 56×64. Los hitos pesan igual; el logro de 2023 no se destaca aparte. Para agregar un hito basta con sumarlo a `milestones` en orden cronológico.
+- Apoyos (Major League Hacking, GitHub Campus Experts): franja secundaria bajo la línea de tiempo, en texto y sin logos.
+- No se incluyen integrantes ni estructura del grupo. Las fotos de actividades y de comunidad quedan pendientes.
+
 ## 6. Responsive
 
 - **≥1101 px:** navegación completa en el header.
