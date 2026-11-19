@@ -193,6 +193,17 @@ Las imágenes se sirven con `NuxtImg` (`format="webp"`, `loading="lazy"` salvo l
 - Las fotos se listan en `app/utils/galleryPhotos.ts` y los archivos van en `public/images/galeria/`. Mientras el archivo no exista, la celda muestra un marcador con la ruta esperada; evento y año vacíos se muestran como `[Evento]` y `[AÑO]`.
 - Una foto cargada se eleva y hace zoom al pasar el cursor (§2.6) y abre un visor ampliado.
 
+### Catálogo «Beneficios de tu correo»
+
+- Rutas `/beneficios` y `/beneficios/[id]`, aisladas del inicio. El único ajuste compartido es habilitar el enlace existente del encabezado.
+- Referencia: diseño de prueba proporcionado por el usuario. Fondo navy, título blanco con punto y coma amarillo, panal atenuado a la derecha, barra blanca de categorías y cuadrícula de tarjetas con borde. La tarjeta Microsoft 365 ocupa dos columnas y lleva borde amarillo; sus letras decorativas son una composición CSS, sin logotipos descargados de terceros.
+- Se conservan las tipografías y tokens existentes. Los iconos de categoría utilizan Lucide mediante `UIcon`. Estilos bajo `.benefits-*` y `.benefit-*` en `main.css`; no cambian otras secciones.
+- Cuadrícula de cuatro columnas, tres hasta 1100 px, dos hasta 800 px y una hasta 540 px. Categorías desplazables; controles con etiquetas visibles, foco y estado seleccionado accesibles. Respeta movimiento reducido.
+- Búsqueda sin distinción de acentos, filtros combinables por categoría/tipo/estado y selector de publicaciones UG. El estado se conserva en la URL; carga progresiva de tarjetas y estado vacío con restablecimiento.
+- Datos en `app/data/beneficios.json`, importados por `node scripts/import-beneficios.mjs` desde `docs/beneficios-correo-ug.md` (185 registros, corte documental 18/11/2026). Conserva texto, requisitos, notas, fuentes y contexto de cada bloque. El anuncio histórico conserva también su estado de investigación original.
+- Cada tarjeta muestra estado editorial y fuente visible; la ficha reúne condiciones, vigencia, fecha y enlace oficial. Las ofertas externas no se presentan como canjeadas con UG. Los importes documentales se identifican como referencias fechadas; Spotify omite el precio en la tarjeta. No se incluyen como ofertas las entradas de la lista de ejemplos no verificables del documento.
+- No hay formularios de activación, pagos ni recolección de credenciales. El catálogo es informativo y no implica afiliación comercial.
+
 ## 6. Responsive
 
 - **≥1101 px:** navegación completa en el header.
