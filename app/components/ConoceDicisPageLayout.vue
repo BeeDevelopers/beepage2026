@@ -1,22 +1,29 @@
 <script setup lang="ts">
 // Navegación y encabezado compartidos solo por las páginas Conoce DICIS.
-type ConoceDicisSectionKey = 'calendario' | 'grupos' | 'accesos' | 'tramites'
+type ConoceDicisSectionKey = 'calendario' | 'grupos' | 'accesos'
 
 const conoceDicisLayoutProps = defineProps<{
   active?: ConoceDicisSectionKey
 }>()
 
 const conoceDicisNavigation = [
-  { key: 'calendario', number: '01', label: 'Calendario anual', to: '/conoce-dicis/calendario' },
-  { key: 'grupos', number: '02', label: 'Grupos organizados', to: '/conoce-dicis/grupos-organizados' },
-  { key: 'accesos', number: '03', label: 'Accesos rápidos', to: '/conoce-dicis/accesos-rapidos' },
-  { key: 'tramites', number: '04', label: 'Trámites', to: '/conoce-dicis/tramites' },
-] satisfies Array<{ key: ConoceDicisSectionKey, number: string, label: string, to: string }>
+  { key: 'calendario', label: 'Calendario anual', to: '/conoce-dicis/calendario' },
+  { key: 'grupos', label: 'Grupos organizados', to: '/conoce-dicis/grupos-organizados' },
+  { key: 'accesos', label: 'Accesos rápidos y trámites', to: '/conoce-dicis/accesos-rapidos' },
+] satisfies Array<{ key: ConoceDicisSectionKey, label: string, to: string }>
 </script>
 
 <template>
   <div class="conoce-dicis-page">
     <section class="conoce-dicis-hero" aria-labelledby="conoce-dicis-page-title">
+      <svg class="conoce-dicis-hero__honeycomb" aria-hidden="true">
+        <defs>
+          <pattern id="conoce-dicis-hero-honeycomb" width="56" height="100" patternUnits="userSpaceOnUse">
+            <path d="M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100" fill="none" stroke="#ffda4a" stroke-width="1.5" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#conoce-dicis-hero-honeycomb)" />
+      </svg>
       <div class="conoce-dicis-hero__inner">
         <p class="conoce-dicis-eyebrow">Universidad de Guanajuato · DICIS Irapuato-Salamanca</p>
         <h1 id="conoce-dicis-page-title">CONOCE DICIS<span>;</span></h1>
@@ -40,7 +47,6 @@ const conoceDicisNavigation = [
           :to="conoceDicisNavigationItem.to"
           :aria-current="conoceDicisLayoutProps.active === conoceDicisNavigationItem.key ? 'page' : undefined"
         >
-          <span class="conoce-dicis-navigation__number">{{ conoceDicisNavigationItem.number }}</span>
           <span>{{ conoceDicisNavigationItem.label }}</span>
         </NuxtLink>
       </nav>
@@ -59,8 +65,23 @@ const conoceDicisNavigation = [
 }
 
 .conoce-dicis-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   color: #fff;
-  background: linear-gradient(125deg, #052a45 0%, #073354 58%, #0b4d76 100%);
+  background: var(--bee-navy);
+}
+
+.conoce-dicis-hero__honeycomb {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  z-index: -1;
+  width: 55%;
+  height: 100%;
+  opacity: .15;
+  pointer-events: none;
+  mask-image: linear-gradient(to right, transparent, black);
 }
 
 .conoce-dicis-hero__inner {
@@ -125,6 +146,7 @@ const conoceDicisNavigation = [
 .conoce-dicis-navigation {
   display: flex;
   width: min(1680px, 100%);
+  justify-content: center;
   gap: 12px;
   margin-inline: auto;
   padding: 12px 28px;
@@ -136,9 +158,9 @@ const conoceDicisNavigation = [
   align-items: center;
   gap: 12px;
   padding: 10px 18px;
-  border: 1px solid transparent;
+  border: 1px solid #cfd8df;
   border-radius: 8px;
-  color: #52606a;
+  color: var(--bee-navy);
   font-size: 15px;
   font-weight: 650;
   line-height: 1.35;
@@ -147,25 +169,30 @@ const conoceDicisNavigation = [
 }
 
 .conoce-dicis-navigation__link:hover,
-.conoce-dicis-navigation__link:focus-visible,
-.conoce-dicis-navigation__link--active {
-  border-color: #c8dce8;
-  background: #f0f7fb;
-  color: #073354;
+.conoce-dicis-navigation__link:focus-visible {
+  border-color: #cfd8df;
+  background: #f7f8fa;
+  color: var(--bee-navy);
 }
 
-.conoce-dicis-navigation__number {
-  color: #3982a8;
-  font-size: 11px;
-  font-variant-numeric: tabular-nums;
-  font-weight: 800;
+.conoce-dicis-navigation__link--active {
+  border-color: var(--bee-navy);
+  background: var(--bee-navy);
+  color: #fff;
+}
+
+.conoce-dicis-navigation__link--active:hover,
+.conoce-dicis-navigation__link--active:focus-visible {
+  border-color: var(--bee-header);
+  background: var(--bee-header);
+  color: #fff;
 }
 
 .conoce-dicis-main {
   width: min(1680px, 100%);
   min-width: 0;
   margin-inline: auto;
-  padding: clamp(30px, 4vw, 58px) 28px 96px;
+  padding: clamp(22px, 2vw, 32px) 28px 80px;
 }
 
 .conoce-dicis-page :focus-visible {
@@ -174,6 +201,10 @@ const conoceDicisNavigation = [
 }
 
 @media (max-width: 600px) {
+  .conoce-dicis-hero__honeycomb {
+    width: 78%;
+  }
+
   .conoce-dicis-hero__inner {
     padding-inline: 20px;
   }
@@ -198,12 +229,15 @@ const conoceDicisNavigation = [
     font-size: 12px;
   }
 
-  .conoce-dicis-navigation__number {
-    font-size: 10px;
+  .conoce-dicis-navigation__link:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: fit-content;
+    max-width: 100%;
   }
 
   .conoce-dicis-main {
-    padding: 26px 16px 64px;
+    padding: 20px 16px 64px;
   }
 }
 

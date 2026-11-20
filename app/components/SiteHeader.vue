@@ -10,6 +10,13 @@ const pendingPages = [
   { label: 'Galería', to: '/galeria' },
 ]
 
+const mobilePages = computed(() => isConoceDicisHeader.value
+  ? [
+      { label: 'Inicio', to: '/' },
+      ...pendingPages.filter(page => page.label !== 'Conoce DICIS'),
+    ]
+  : pendingPages)
+
 const navigationUi = {
   root: 'header-navigation-menu',
   list: 'header-navigation-list',
@@ -72,7 +79,7 @@ const navigationUi = {
     <template #content>
       <nav id="mobile-navigation" class="mobile-navigation" aria-label="Navegación principal">
         <UNavigationMenu
-          :items="pendingPages"
+          :items="mobilePages"
           orientation="vertical"
           variant="link"
           :ui="navigationUi"

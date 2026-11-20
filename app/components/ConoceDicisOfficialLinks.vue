@@ -2,7 +2,7 @@
 const conoceDicisOfficialLinksProps = withDefaults(defineProps<{
   items: Array<{
     id: string
-    number: string
+    number?: string
     label: string
     title: string
     description: string
@@ -20,11 +20,12 @@ const conoceDicisOfficialLinksProps = withDefaults(defineProps<{
     <li v-for="conoceDicisOfficialLink in conoceDicisOfficialLinksProps.items" :key="conoceDicisOfficialLink.id">
       <a
         class="conoce-dicis-official-link"
+        :class="{ 'conoce-dicis-official-link--without-number': !conoceDicisOfficialLink.number }"
         :href="conoceDicisOfficialLink.href"
         target="_blank"
         rel="noopener noreferrer"
       >
-        <span class="conoce-dicis-official-link__number" aria-hidden="true">{{ conoceDicisOfficialLink.number }}</span>
+        <span v-if="conoceDicisOfficialLink.number" class="conoce-dicis-official-link__number" aria-hidden="true">{{ conoceDicisOfficialLink.number }}</span>
         <span class="conoce-dicis-official-link__label">{{ conoceDicisOfficialLink.label }}</span>
         <h3>{{ conoceDicisOfficialLink.title }}</h3>
         <p>{{ conoceDicisOfficialLink.description }}</p>
@@ -62,9 +63,9 @@ const conoceDicisOfficialLinksProps = withDefaults(defineProps<{
   flex-direction: column;
   align-items: flex-start;
   padding: 23px;
-  border: 1px solid #e2eaf0;
+  border: 1px solid #d4e5ee;
   border-radius: 13px;
-  background: #fff;
+  background: #f0f7fb;
   box-shadow: 0 6px 18px rgb(7 51 84 / 4%);
   color: #52606a;
   text-decoration: none;
@@ -73,7 +74,8 @@ const conoceDicisOfficialLinksProps = withDefaults(defineProps<{
 
 .conoce-dicis-official-link:hover {
   transform: translateY(-3px);
-  border-color: #c8dce8;
+  border-color: #b5d5e5;
+  background: #e7f2f8;
   box-shadow: 0 14px 30px rgb(7 51 84 / 10%);
 }
 
@@ -94,6 +96,10 @@ const conoceDicisOfficialLinksProps = withDefaults(defineProps<{
   font-size: 12px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
+}
+
+.conoce-dicis-official-link--without-number .conoce-dicis-official-link__label {
+  margin-top: 0;
 }
 
 .conoce-dicis-official-link__label {
@@ -155,6 +161,7 @@ const conoceDicisOfficialLinksProps = withDefaults(defineProps<{
     min-height: 0;
     padding: 21px;
   }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

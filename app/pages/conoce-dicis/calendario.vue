@@ -68,7 +68,7 @@ const conoceDicisCalendarInitialDate = conoceDicisCalendarToday.getFullYear() ==
   ? conoceDicisCalendarToday
   : new Date(conoceDicisCalendarYear, 0, 1)
 const conoceDicisCalendarSelectedDate = ref(toConoceDicisCalendarIsoDate(conoceDicisCalendarInitialDate))
-const conoceDicisCalendarActiveFilterIds = ref<string[]>([])
+const conoceDicisCalendarActiveFilterIds = ref<string[]>(conoceDicisCalendarFilterGroups.map(group => group.id))
 const conoceDicisCalendarSelectedEntryIds = ref<string[]>([])
 const conoceDicisCalendarSelectionLabel = ref<string | null>(null)
 const conoceDicisCalendarExpandedInfoSections = ref<string[]>([])
@@ -503,7 +503,7 @@ function getConoceDicisCalendarCellLabel(cell: ConoceDicisCalendarCell) {
                 {{ conoceDicisCalendarFilter.label }}
               </button>
             </div>
-            <p class="conoce-dicis-calendar-filters__hint">Puedes activar varios colores o elegir una fecha específica desde el menú izquierdo. Sin selección, el calendario queda en blanco.</p>
+            <p class="conoce-dicis-calendar-filters__hint">Los colores aparecen activos al abrir el calendario; puedes activar o desactivar varios a tu gusto, o elegir una fecha específica desde el menú izquierdo. Si desactivas todos, el calendario queda en blanco.</p>
           </section>
 
           <section v-if="conoceDicisCalendarSelectionLabel" class="conoce-dicis-calendar-menu-selection" aria-live="polite" aria-atomic="true">
@@ -579,12 +579,12 @@ function getConoceDicisCalendarCellLabel(cell: ConoceDicisCalendarCell) {
 
 <style scoped>
 .conoce-dicis-calendar-heading {
-  margin: 0 0 30px;
+  margin: 0 0 20px;
 }
 
 .conoce-dicis-calendar-eyebrow,
 .conoce-dicis-calendar-section-eyebrow {
-  margin: 0 0 7px;
+  margin: 0 0 5px;
   color: #176b9a;
   font-size: 11px;
   font-weight: 800;
@@ -603,7 +603,7 @@ function getConoceDicisCalendarCellLabel(cell: ConoceDicisCalendarCell) {
 
 .conoce-dicis-calendar-heading > p:last-child {
   max-width: 1000px;
-  margin: 12px 0 0;
+  margin: 8px 0 0;
   color: #52606a;
   font-size: 16px;
   line-height: 1.6;
@@ -1337,6 +1337,19 @@ function getConoceDicisCalendarCellLabel(cell: ConoceDicisCalendarCell) {
 
   .conoce-dicis-calendar-filters {
     padding: 16px;
+  }
+
+  .conoce-dicis-calendar-filters__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr));
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .conoce-dicis-calendar-filter {
+    width: 100%;
+    min-width: 0;
+    justify-content: flex-start;
   }
 
   .conoce-dicis-calendar-menu-selection {
