@@ -1,44 +1,58 @@
 <script setup lang="ts">
 useSeoMeta({
   title: 'Grupos organizados DICIS | Conoce DICIS',
-  description: 'Noticias oficiales de grupos organizados de la DICIS, sede Irapuato-Salamanca, Universidad de Guanajuato.',
+  description: 'Conoce las actividades y áreas de interés de los grupos organizados de la DICIS, sede Irapuato-Salamanca.',
 })
 
-const conoceDicisGroupNews = [
+const conoceDicisOrganizedGroups = [
   {
     group: 'BeeDevelopers',
-    title: 'Estudiantes UG del grupo organizado BeeDevelopers renuevan su directiva e informan resultados',
-    source: 'https://www.ugto.mx/noticias/quehacer-institucional/20083-estudiantes-ug-del-grupo-organizado-beedevelopers-renuevan-su-directiva-e-informan-resultados',
+    description: 'Organiza actividades y encuentros tecnológicos, y promueve la participación estudiantil en hackatones.',
+    source: 'https://www.instagram.com/beedevelopers/',
+    actionLabel: 'Visitar Instagram de BeeDevelopers',
+    logo: '/images/Logos/Grupos Organizados/beedevelopers.png',
   },
   {
     group: 'AUGE',
-    title: 'En la UG impulsan el futuro de la gestión empresarial con jornadas académicas',
-    source: 'https://www.dcv.ugto.mx/noticias/quehacer-institucional/21315-en-la-ug-impulsan-el-futuro-de-la-gestion-empresarial-con-jornadas-academicas',
+    description: 'Complementa la formación en Gestión Empresarial con jornadas académicas y vinculación con el sector productivo.',
+    source: 'https://www.instagram.com/auge_dicis/',
+    actionLabel: 'Visitar Instagram de AUGE DICIS',
+    logo: '/images/Logos/Grupos Organizados/auge.jpg',
   },
   {
     group: 'CMT.UG',
-    title: 'El grupo organizado Combustibles Alternativos y Motores Térmicos de la UG tiene nueva directiva',
-    source: 'https://www.ugto.mx/noticias/quehacer-institucional/19998-el-grupo-organizado-combustibles-alternativos-y-motores-termicos-de-la-ug-tiene-nueva-directiva',
+    description: 'Difunde avances sobre aprovechamiento de residuos, producción de combustibles alternativos y mejora de motores térmicos.',
+    source: 'https://www.instagram.com/cmt.ug/',
+    actionLabel: 'Visitar Instagram de CMT.UG',
+    logo: '/images/Logos/Grupos Organizados/cmt-ug.jpg',
   },
   {
     group: 'ASME–SOMIM',
-    title: 'DICIS impulsa vocaciones científicas en la 14.ª edición de Women in Engineering',
-    source: 'https://www.ugto.mx/noticias/quehacer-institucional/20656-dicis-impulsa-vocaciones-cientificas-en-la-14-edicion-de-women-in-engineering',
-  },
-  {
-    group: 'AERO–UG',
-    title: 'UG impulsa el talento aeroespacial con el arranque de la Aerospace Week 2025',
-    source: 'https://www.dcv.ugto.mx/noticias/quehacer-institucional/20784-ug-impulsa-el-talento-aeroespacial-con-el-arranque-de-la-aerospace-week-2025',
-  },
-  {
-    group: 'OEDI',
-    title: 'Rinde protesta nueva mesa directiva de la Organización Estudiantil en Desarrollo de Ideas',
-    source: 'https://www.ugto.mx/noticias/quehacer-institucional/19111-rinde-protesta-nueva-mesa-directiva-de-la-organizacion-estudiantil-en-desarrollo-de-ideas',
+    description: 'Promueve las vocaciones en ingeniería y la formación académica mediante Women in Engineering, semanas de ingeniería, conferencias y talleres.',
+    source: 'https://www.instagram.com/asmesomim_ug/',
+    actionLabel: 'Visitar Instagram de ASME–SOMIM',
+    logo: '/images/Logos/Grupos Organizados/asme-somim.jpg',
   },
   {
     group: 'ACM Capítulo Guanajuato',
-    title: 'Rinde protesta grupo organizado ACM Capítulo Guanajuato de la DICIS; impulsarán la inteligencia artificial',
-    source: 'https://www.ugto.mx/noticias/quehacer-institucional/18963-rinde-protesta-grupo-organizado-acm-capitulo-guanajuato-de-la-dicis-impulsaran-la-inteligencia-artificial',
+    description: 'Prepara a estudiantes para competencias y actividades de informática, programación, desarrollo web, ciberseguridad e inteligencia artificial.',
+    source: 'https://www.facebook.com/ACM.DICIS',
+    actionLabel: 'Visitar Facebook de ACM DICIS',
+    logo: '/images/Logos/Grupos Organizados/acm.jpg',
+  },
+  {
+    group: 'OEDI',
+    description: 'Fomenta la creatividad, el liderazgo, el trabajo en equipo y el emprendimiento mediante proyectos empresariales y creativos.',
+    source: 'https://www.instagram.com/oedi.dicis/',
+    actionLabel: 'Visitar Instagram de OEDI',
+    logo: '/images/Logos/Grupos Organizados/oedi.jpg',
+  },
+  {
+    group: 'AERO–UG',
+    description: 'Acerca la ingeniería aeroespacial a la comunidad universitaria con actividades de divulgación, eventos académicos y proyectos experimentales de cohetería.',
+    source: 'https://www.instagram.com/aero.ug/',
+    actionLabel: 'Visitar Instagram de AERO–UG',
+    logo: '/images/Logos/Grupos Organizados/aero-ug.jpg',
   },
 ]
 </script>
@@ -52,14 +66,32 @@ const conoceDicisGroupNews = [
       </div>
 
       <ul class="conoce-dicis-groups-news-list">
-        <li v-for="conoceDicisGroupNewsItem in conoceDicisGroupNews" :key="conoceDicisGroupNewsItem.group">
-          <article class="conoce-dicis-groups-news">
-            <p>{{ conoceDicisGroupNewsItem.group }}</p>
-            <h3>{{ conoceDicisGroupNewsItem.title }}</h3>
-            <a :href="conoceDicisGroupNewsItem.source" target="_blank" rel="noopener noreferrer">
-              Leer noticia oficial UG <span aria-hidden="true">↗</span>
-            </a>
-          </article>
+        <li v-for="conoceDicisOrganizedGroup in conoceDicisOrganizedGroups" :key="conoceDicisOrganizedGroup.group">
+          <a
+            class="conoce-dicis-groups-news-link"
+            :href="conoceDicisOrganizedGroup.source"
+            :aria-label="conoceDicisOrganizedGroup.actionLabel"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <article class="conoce-dicis-groups-news">
+              <NuxtImg
+                :src="conoceDicisOrganizedGroup.logo"
+                :alt="`Logotipo de ${conoceDicisOrganizedGroup.group}`"
+                class="conoce-dicis-groups-news__logo"
+                width="160"
+                height="160"
+                sizes="160px"
+                format="webp"
+                loading="lazy"
+              />
+              <p>{{ conoceDicisOrganizedGroup.group }}</p>
+              <h3>{{ conoceDicisOrganizedGroup.description }}</h3>
+              <span class="conoce-dicis-groups-news__action">
+                {{ conoceDicisOrganizedGroup.actionLabel }} <span aria-hidden="true">↗</span>
+              </span>
+            </article>
+          </a>
         </li>
       </ul>
     </section>
@@ -69,11 +101,11 @@ const conoceDicisGroupNews = [
 <style scoped>
 .conoce-dicis-groups-heading {
   max-width: 760px;
-  margin: 8px 0 28px;
+  margin: 0 0 20px;
 }
 
 .conoce-dicis-groups-eyebrow {
-  margin: 0 0 10px;
+  margin: 0 0 6px;
   color: #176b9a;
   font-size: 12px;
   font-weight: 700;
@@ -92,21 +124,63 @@ const conoceDicisGroupNews = [
 .conoce-dicis-groups-news-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 20px;
+  grid-auto-rows: 1fr;
+  gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+.conoce-dicis-groups-news-list > li:last-child {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: calc((100% - 16px) / 2);
+}
+
+.conoce-dicis-groups-news-link {
+  display: block;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
+}
+
 .conoce-dicis-groups-news {
   display: flex;
-  min-height: 250px;
+  height: 100%;
+  min-height: 0;
   flex-direction: column;
-  padding: 26px;
-  border: 1px solid #e2eaf0;
+  padding: 18px 22px 21px;
+  border: 1px solid #d4e5ee;
   border-radius: 13px;
-  background: #fff;
+  background: #f0f7fb;
   box-shadow: 0 6px 18px rgb(7 51 84 / 4%);
+  transition: transform 160ms ease, border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.conoce-dicis-groups-news-link:hover .conoce-dicis-groups-news,
+.conoce-dicis-groups-news-link:focus-visible .conoce-dicis-groups-news {
+  transform: translateY(-3px);
+  border-color: #b5d5e5;
+  background: #e7f2f8;
+  box-shadow: 0 14px 30px rgb(7 51 84 / 10%);
+}
+
+.conoce-dicis-groups-news-link:focus-visible {
+  border-radius: 13px;
+  outline: 3px solid #147ca8;
+  outline-offset: 3px;
+}
+
+.conoce-dicis-groups-news__logo {
+  display: block;
+  width: 160px;
+  height: 160px;
+  margin: 0 0 16px;
+  padding: 8px;
+  border: 1px solid #d4e5ee;
+  border-radius: 50%;
+  background: #fff;
+  object-fit: contain;
 }
 
 .conoce-dicis-groups-news > p {
@@ -119,13 +193,13 @@ const conoceDicisGroupNews = [
 }
 
 .conoce-dicis-groups-news h3 {
-  margin: 12px 0 22px;
+  margin: 8px 0 16px;
   color: #073354;
   font-size: 21px;
   line-height: 1.45;
 }
 
-.conoce-dicis-groups-news a {
+.conoce-dicis-groups-news__action {
   display: inline-flex;
   gap: 8px;
   align-items: center;
@@ -136,7 +210,7 @@ const conoceDicisGroupNews = [
   text-decoration: none;
 }
 
-.conoce-dicis-groups-news a:hover {
+.conoce-dicis-groups-news-link:hover .conoce-dicis-groups-news__action {
   color: #052a45;
   text-decoration: underline;
 }
@@ -146,8 +220,24 @@ const conoceDicisGroupNews = [
     grid-template-columns: 1fr;
   }
 
+  .conoce-dicis-groups-news-list > li:last-child {
+    grid-column: auto;
+    width: 100%;
+  }
+
   .conoce-dicis-groups-news {
     min-height: 0;
+    padding: 17px 20px 20px;
+  }
+
+  .conoce-dicis-groups-news__logo {
+    margin-inline: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conoce-dicis-groups-news {
+    transition: none;
   }
 }
 </style>
