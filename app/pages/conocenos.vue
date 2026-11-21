@@ -86,7 +86,51 @@ const activities = [
     tag: 'Cada año',
     text: 'Organizamos hackatones en la DICIS y formamos equipos para participar en competencias como NASA Space Apps Challenge. Cada año también asistimos a Talent Land para conocer proyectos y explorar distintas áreas de la tecnología.',
   },
+  {
+    title: 'Kermeses y ventas',
+    tag: 'Días festivos',
+    text: 'Cuando hay kermeses en la universidad, ponemos nuestro puesto. ¡Los Jarritos nunca faltan! Es otra forma de convivir con la comunidad fuera del salón y, además, contribuye a los fondos del grupo.',
+  },
+  {
+    title: 'BeeTech Support',
+    tag: 'Ayuda técnica',
+    text: 'Ayudamos a los estudiantes con su tecnología: les explicamos qué beneficios incluye su correo institucional, limpiamos sus dispositivos e instalamos los programas a los que tienen acceso con su cuenta.',
+  },
 ]
+
+// Índice: marca la sección que está a la vista. La línea de detección va un poco debajo de la barra fija.
+const activeSection = ref('')
+const indexList = ref<HTMLElement | null>(null)
+let sectionObserver: IntersectionObserver | undefined
+
+onMounted(() => {
+  sectionObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        activeSection.value = entry.target.id
+      }
+      // De regreso al encabezado: ninguna sección queda marcada.
+      else if (entry.target.id === pageSections[0]?.id && entry.boundingClientRect.top > 0) {
+        activeSection.value = ''
+      }
+    }
+  }, { rootMargin: '-90px 0px -70% 0px' })
+
+  for (const section of pageSections) {
+    const element = document.getElementById(section.id)
+    if (element) sectionObserver.observe(element)
+  }
+})
+
+onBeforeUnmount(() => sectionObserver?.disconnect())
+
+// En pantallas angostas el índice se desliza de lado: mantiene visible el enlace activo.
+watch(activeSection, (id) => {
+  const list = indexList.value
+  const link = list?.querySelector<HTMLElement>(`a[href="#${id}"]`)
+  if (!list || !link) return
+  list.scrollTo({ left: link.offsetLeft - (list.clientWidth - link.offsetWidth) / 2, behavior: 'smooth' })
+})
 
 // Mosaico de Comunidad: lugares para fotos de convivencia (pendientes). La primera es la grande.
 const communityPhotos = ['Toma de protesta', 'Reunión del grupo', 'Convivencia', 'Salida del grupo']
@@ -111,7 +155,7 @@ const joinOptions = [
     <!-- 1. Encabezado · navy + panal, con la terminal a la derecha -->
     <section class="relative isolate overflow-hidden bg-(--bee-header) text-white" aria-labelledby="conocenos-title">
       <HoneycombPattern class="hero-honeycomb" />
-      <div class="hero-inner about-hero">
+      <div class="hero-inner conocenos-hero">
         <div class="hero-copy">
           <UBreadcrumb
             :items="breadcrumbItems"
@@ -121,7 +165,7 @@ const joinOptions = [
               separatorIcon: 'size-5 text-(--bee-text-on-dark)',
             }"
           />
-          <h1 id="conocenos-title" class="about-hero-title">
+          <h1 id="conocenos-title" class="conocenos-hero-title">
             Somos <span>BeeDevelopers</span>
           </h1>
           <p class="hero-description">
@@ -143,11 +187,12 @@ const joinOptions = [
 
     <!-- Índice de secciones · barra fija -->
     <nav class="sticky top-0 z-20 border-b border-(--bee-border) bg-white/95 backdrop-blur" aria-label="Secciones de la página">
-      <ul class="mx-auto flex max-w-(--bee-page-max) gap-1.5 overflow-x-auto px-(--bee-gutter) py-3">
+      <ul ref="indexList" class="mx-auto flex max-w-(--bee-page-max) gap-1.5 overflow-x-auto px-(--bee-gutter) py-3">
         <li v-for="section in pageSections" :key="section.id" class="flex-none">
           <a
             :href="`#${section.id}`"
-            class="inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium whitespace-nowrap text-(--bee-navy) hover:bg-(--bee-surface)"
+            :aria-current="activeSection === section.id ? 'location' : undefined"
+            class="conocenos-index-link inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium whitespace-nowrap text-(--bee-navy) hover:bg-(--bee-surface)"
           >
             {{ section.label }}
           </a>
@@ -155,8 +200,9 @@ const joinOptions = [
       </ul>
     </nav>
 
-    <!-- 2. Historia: línea de tiempo + apoyos (discreto) · crema -->
-    <section id="historia" class="home-section scroll-mt-24! bg-(--bee-cream)" aria-labelledby="historia-title">
+    <!-- 2. Historia: línea de tiempo + apoyos (discreto) · blanco con panal; las celdas del fondo miden lo mismo que los hexágonos de la línea -->
+    <section id="historia" class="home-section conocenos-section conocenos-section--honeycomb scroll-mt-24!" aria-labelledby="historia-title">
+      <HoneycombPattern class="conocenos-honeycomb" :scale="72 / 56" />
       <div class="home-container">
         <p class="section-label">
           // nuestra historia
@@ -169,7 +215,7 @@ const joinOptions = [
           <li v-for="milestone in milestones" :key="milestone.title" class="timeline-item">
             <div class="timeline-marker" aria-hidden="true">
               <svg viewBox="0 0 56 64">
-                <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="#ffda4a" stroke="#fffbef" stroke-width="4" />
+                <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="#ffda4a" stroke="#fff" stroke-width="4" />
               </svg>
             </div>
             <div class="timeline-body lift">
@@ -182,8 +228,8 @@ const joinOptions = [
           </li>
         </ol>
 
-        <div class="about-supporters">
-          <p class="about-supporters-label">
+        <div class="conocenos-supporters">
+          <p class="conocenos-supporters-label">
             Con el apoyo de
           </p>
           <ul>
@@ -196,7 +242,7 @@ const joinOptions = [
     </section>
 
     <!-- 3. Misión, visión y objetivos · blanco -->
-    <section id="mision" class="home-section scroll-mt-24!" aria-labelledby="mision-title">
+    <section id="mision" class="home-section conocenos-section scroll-mt-24!" aria-labelledby="mision-title">
       <div class="home-container">
         <p class="section-label">
           // misión y visión
@@ -205,55 +251,55 @@ const joinOptions = [
           Lo que nos mueve
         </h2>
 
-        <div class="about-statements">
-          <article class="about-statement about-statement--dark">
-            <svg class="about-statement-hexagon" aria-hidden="true" viewBox="0 0 56 64">
+        <div class="conocenos-statements">
+          <article class="conocenos-statement conocenos-statement--dark">
+            <svg class="conocenos-statement-hexagon" aria-hidden="true" viewBox="0 0 56 64">
               <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="none" stroke="currentColor" stroke-width="2" />
             </svg>
-            <h3 class="about-statement-label">
+            <h3 class="conocenos-statement-label">
               Misión
             </h3>
-            <p class="about-statement-text">
+            <p class="conocenos-statement-text">
               Acercar la tecnología a la comunidad estudiantil de la UG mediante talleres, proyectos y eventos donde los estudiantes puedan aprender, compartir conocimientos y desarrollar sus propias ideas.
             </p>
           </article>
-          <article class="about-statement">
-            <svg class="about-statement-hexagon" aria-hidden="true" viewBox="0 0 56 64">
+          <article class="conocenos-statement">
+            <svg class="conocenos-statement-hexagon" aria-hidden="true" viewBox="0 0 56 64">
               <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="none" stroke="currentColor" stroke-width="2" />
             </svg>
-            <h3 class="about-statement-label">
+            <h3 class="conocenos-statement-label">
               Visión
             </h3>
-            <p class="about-statement-text">
+            <p class="conocenos-statement-text">
               Queremos que BeeDevelopers sea un punto de encuentro para estudiantes de la UG que buscan iniciarse en tecnología, profundizar en un tema o impulsar un proyecto que beneficie a su comunidad.
             </p>
           </article>
         </div>
 
-        <h3 class="about-subheading">
+        <h3 class="conocenos-subheading">
           Nuestros objetivos
         </h3>
-        <ol class="about-objectives">
+        <ol class="conocenos-objectives">
           <li v-for="(objective, index) in objectives" :key="objective">
-            <span class="about-objective-number" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
+            <span class="conocenos-objective-number" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
             <p>{{ objective }}</p>
           </li>
         </ol>
       </div>
     </section>
 
-    <!-- 4. Valores · crema -->
-    <section id="valores" class="home-section scroll-mt-24! bg-(--bee-cream)" aria-labelledby="valores-title">
+    <!-- 4. Valores · navy, tarjetas blancas -->
+    <section id="valores" class="home-section conocenos-section conocenos-section--navy scroll-mt-24!" aria-labelledby="valores-title">
       <div class="home-container">
-        <p class="section-label">
+        <p class="section-label section-label--on-dark">
           // cultura y valores
         </p>
-        <h2 id="valores-title" class="section-heading">
+        <h2 id="valores-title" class="section-heading section-heading--on-dark">
           Nuestros valores
         </h2>
-        <ul class="about-values">
-          <li v-for="value in values" :key="value.title" class="about-value lift">
-            <span class="about-value-icon" aria-hidden="true">
+        <ul class="conocenos-values">
+          <li v-for="value in values" :key="value.title" class="conocenos-value lift">
+            <span class="conocenos-value-icon" aria-hidden="true">
               <svg viewBox="0 0 56 64">
                 <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="#ffda4a" />
               </svg>
@@ -266,30 +312,30 @@ const joinOptions = [
       </div>
     </section>
 
-    <!-- 5. Actividades · navy -->
-    <section id="actividades" class="home-section scroll-mt-24! bg-(--bee-header)" aria-labelledby="actividades-title">
+    <!-- 5. Actividades · azul claro, tarjetas navy -->
+    <section id="actividades" class="home-section conocenos-section conocenos-section--sky scroll-mt-24!" aria-labelledby="actividades-title">
       <div class="home-container">
         <div class="section-head">
           <div>
-            <p class="section-label section-label--on-dark">
+            <p class="section-label">
               // actividades
             </p>
-            <h2 id="actividades-title" class="section-heading section-heading--on-dark">
+            <h2 id="actividades-title" class="section-heading">
               Lo que hacemos juntos
             </h2>
           </div>
-          <p class="about-section-intro about-section-intro--on-dark">
+          <p class="conocenos-section-intro">
             Desde nuestras primeras actividades hemos creado eventos propios y colaborado con otros grupos organizados de la División.
           </p>
         </div>
-        <ul class="about-activities">
-          <li v-for="activity in activities" :key="activity.title" class="about-activity lift">
+        <ul class="conocenos-activities">
+          <li v-for="activity in activities" :key="activity.title" class="conocenos-activity lift">
             <!-- Foto pendiente: reemplazar por NuxtImg cuando esté en public/images/ -->
-            <div class="about-photo-placeholder about-photo-placeholder--dark" aria-hidden="true">
+            <div class="conocenos-photo-placeholder conocenos-photo-placeholder--dark" aria-hidden="true">
               [foto · {{ activity.title }}]
             </div>
-            <div class="about-activity-body">
-              <span class="about-activity-tag">{{ activity.tag }}</span>
+            <div class="conocenos-activity-body">
+              <span class="conocenos-activity-tag">{{ activity.tag }}</span>
               <h3>{{ activity.title }}</h3>
               <p>{{ activity.text }}</p>
             </div>
@@ -298,8 +344,9 @@ const joinOptions = [
       </div>
     </section>
 
-    <!-- 6. Comunidad: mosaico de fotos de convivencia + enlace a la galería · crema -->
-    <section id="comunidad" class="home-section scroll-mt-24! bg-(--bee-cream)" aria-labelledby="comunidad-title">
+    <!-- 6. Comunidad: mosaico de fotos de convivencia + enlace a la galería · blanco con panal -->
+    <section id="comunidad" class="home-section conocenos-section conocenos-section--honeycomb scroll-mt-24!" aria-labelledby="comunidad-title">
+      <HoneycombPattern class="conocenos-honeycomb" :scale="72 / 56" />
       <div class="home-container">
         <div class="section-head">
           <div>
@@ -307,7 +354,7 @@ const joinOptions = [
               // nuestra comunidad
             </p>
             <h2 id="comunidad-title" class="section-heading">
-              [Título de comunidad]
+              Comunidad BeeDevelopers
             </h2>
           </div>
           <UButton to="/galeria" color="neutral" variant="outline" trailing-icon="i-lucide-arrow-right" class="min-h-11 rounded-lg px-6 text-sm font-semibold text-(--bee-navy) ring-(--bee-navy)">
@@ -315,8 +362,8 @@ const joinOptions = [
           </UButton>
         </div>
         <!-- Fotos pendientes: reemplazar cada lugar por NuxtImg cuando estén en public/images/ -->
-        <ul class="about-mosaic" aria-hidden="true">
-          <li v-for="photo in communityPhotos" :key="photo" class="about-photo-placeholder">
+        <ul class="conocenos-mosaic" aria-hidden="true">
+          <li v-for="photo in communityPhotos" :key="photo" class="conocenos-photo-placeholder">
             [foto · {{ photo }}]
           </li>
         </ul>
@@ -324,22 +371,22 @@ const joinOptions = [
     </section>
 
     <!-- 7. Preguntas frecuentes · blanco -->
-    <section id="preguntas" class="home-section scroll-mt-24!" aria-labelledby="preguntas-title">
-      <div class="home-container about-faq">
-        <div class="about-faq-intro">
+    <section id="preguntas" class="home-section conocenos-section scroll-mt-24!" aria-labelledby="preguntas-title">
+      <div class="home-container conocenos-faq">
+        <div class="conocenos-faq-intro">
           <p class="section-label">
             // preguntas frecuentes
           </p>
           <h2 id="preguntas-title" class="section-heading">
             ¿Tienes dudas?
           </h2>
-          <p class="about-section-intro">
+          <p class="conocenos-section-intro">
             Si no encuentras tu respuesta, escríbenos por nuestras redes sociales.
           </p>
         </div>
         <UAccordion
           :items="faqItems"
-          class="about-faq-list"
+          class="conocenos-faq-list"
           :ui="{
             item: 'border-b border-(--bee-border)',
             trigger: 'min-h-16 py-4 gap-4 text-left',
@@ -352,9 +399,9 @@ const joinOptions = [
     </section>
 
     <!-- 8. Únete: reutiliza el estilo de la sección de registro del inicio · navy + panal -->
-    <section id="unete" class="home-section registration-section scroll-mt-24!" aria-labelledby="unete-title">
+    <section id="unete" class="home-section registration-section conocenos-section scroll-mt-24!" aria-labelledby="unete-title">
       <HoneycombPattern class="registration-honeycomb" />
-      <div class="home-container registration-layout about-join">
+      <div class="home-container registration-layout conocenos-join">
         <div class="registration-intro">
           <p class="section-label section-label--on-dark">
             // únete
@@ -380,10 +427,10 @@ const joinOptions = [
           <p class="registration-note">
             Completa el formulario de registro y súmate al grupo.
           </p>
-          <UButton to="/#registro" class="bee-button about-join-button" trailing-icon="i-lucide-arrow-right">
+          <UButton to="/#registro" class="bee-button conocenos-join-button" trailing-icon="i-lucide-arrow-right">
             Únete a BeeDevelopers
           </UButton>
-          <div class="about-join-contact">
+          <div class="conocenos-join-contact">
             <p>Algunas actividades otorgan horas formativas. Para servicio social, escríbenos:</p>
             <ul>
               <li v-for="social in socialLinks" :key="social.name">
