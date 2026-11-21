@@ -58,31 +58,38 @@ const objectives = [
 ]
 
 const values = [
-  { title: 'Colaboración', text: 'Compartimos conocimientos, repartimos tareas y nos apoyamos cuando alguien necesita ayuda.' },
-  { title: 'Inclusión', text: 'Damos la bienvenida a estudiantes de cualquier carrera, también a quienes empiezan desde cero.' },
-  { title: 'Respeto', text: 'Escuchamos las ideas y tomamos en serio las preguntas de cada integrante.' },
-  { title: 'Iniciativa', text: 'Proponemos mejoras, probamos ideas y participamos en su desarrollo.' },
-  { title: 'Compromiso', text: 'Cumplimos los acuerdos y damos seguimiento a las actividades que asumimos.' },
+  { title: 'Colaboración', icon: 'i-lucide-users', text: 'Compartimos conocimientos, repartimos tareas y nos apoyamos cuando alguien necesita ayuda.' },
+  { title: 'Inclusión', icon: 'i-lucide-heart', text: 'Damos la bienvenida a estudiantes de cualquier carrera, también a quienes empiezan desde cero.' },
+  { title: 'Respeto', icon: 'i-lucide-message-circle', text: 'Escuchamos las ideas y tomamos en serio las preguntas de cada integrante.' },
+  { title: 'Iniciativa', icon: 'i-lucide-lightbulb', text: 'Proponemos mejoras, probamos ideas y participamos en su desarrollo.' },
+  { title: 'Compromiso', icon: 'i-lucide-check', text: 'Cumplimos los acuerdos y damos seguimiento a las actividades que asumimos.' },
 ]
 
 const activities = [
   {
     title: 'DevWeek',
+    tag: 'Desde 2020',
     text: 'Una semana de talleres, pláticas y conferencias sobre desarrollo de software, tecnología y habilidades profesionales. Reunimos a estudiantes, docentes y ponentes invitados para compartir herramientas y experiencias.',
   },
   {
     title: 'SheCodes',
+    tag: 'Desde 2023',
     text: 'Un espacio seguro para que las mujeres de la Universidad aprendan a programar entre compañeras. Una de sus ediciones incluyó un curso de Python básico para dar los primeros pasos en programación.',
   },
   {
     title: 'BeeMatch',
+    tag: '14 de febrero',
     text: 'Para el Día del Amor y la Amistad, combinamos programación y convivencia. Los participantes responden un cuestionario sobre sus gustos y nuestro algoritmo busca coincidencias entre sus respuestas.',
   },
   {
     title: 'Hackatones y Talent Land',
+    tag: 'Cada año',
     text: 'Organizamos hackatones en la DICIS y formamos equipos para participar en competencias como NASA Space Apps Challenge. Cada año también asistimos a Talent Land para conocer proyectos y explorar distintas áreas de la tecnología.',
   },
 ]
+
+// Mosaico de Comunidad: lugares para fotos de convivencia (pendientes). La primera es la grande.
+const communityPhotos = ['Toma de protesta', 'Reunión del grupo', 'Convivencia', 'Salida del grupo']
 
 const faqItems = [
   { label: '¿Necesito saber programar?', content: 'Puedes entrar aunque nunca hayas programado. El grupo también es un espacio para empezar.' },
@@ -93,43 +100,50 @@ const faqItems = [
 ]
 
 const joinOptions = [
-  { title: 'Practicar lo que te interesa.', text: 'Participa en un taller, prueba una herramienta o comparte una duda de la carrera con el grupo.' },
-  { title: 'Participar en un hackatón.', text: 'Trabaja en una idea en equipo, desarrolla una solución y presenta el resultado.' },
-  { title: 'Organizar algo propio.', text: 'Si hay un tema que te gustaría aprender o enseñar, puedes proponer un taller y participar en su organización, desde elegir el contenido hasta recibir a los asistentes.' },
+  { title: 'Practicar lo que te interesa', text: 'Participa en un taller, prueba una herramienta o comparte una duda de la carrera con el grupo.' },
+  { title: 'Participar en un hackatón', text: 'Trabaja en una idea en equipo, desarrolla una solución y presenta el resultado.' },
+  { title: 'Organizar algo propio', text: 'Si hay un tema que te gustaría aprender o enseñar, propón un taller y participa en su organización, desde elegir el contenido hasta recibir a los asistentes.' },
 ]
 </script>
 
 <template>
   <main id="contenido" tabindex="-1">
-    <!-- 1. Encabezado · navy + panal -->
+    <!-- 1. Encabezado · navy + panal, con la terminal a la derecha -->
     <section class="relative isolate overflow-hidden bg-(--bee-header) text-white" aria-labelledby="conocenos-title">
       <HoneycombPattern class="hero-honeycomb" />
-      <div class="home-section">
-        <div class="home-container">
+      <div class="hero-inner about-hero">
+        <div class="hero-copy">
           <UBreadcrumb
             :items="breadcrumbItems"
             :ui="{
-              link: 'font-mono text-base text-[#c9d7e1] hover:text-white',
+              link: 'font-mono text-base text-(--bee-text-on-dark) hover:text-white',
               linkLabel: 'text-inherit',
-              separatorIcon: 'size-5 text-[#c9d7e1]',
+              separatorIcon: 'size-5 text-(--bee-text-on-dark)',
             }"
           />
-          <h1 id="conocenos-title" class="section-heading section-heading--on-dark mt-5!">
-            Somos BeeDevelopers
+          <h1 id="conocenos-title" class="about-hero-title">
+            Somos <span>BeeDevelopers</span>
           </h1>
-          <p class="mt-4 max-w-3xl text-[clamp(17px,1.25vw,22px)] leading-relaxed text-(--bee-text-on-hero)">
-            Somos un grupo estudiantil de la División de Ingenierías de la Universidad de Guanajuato, Campus Irapuato-Salamanca. Nos reúne el interés por la tecnología y por compartir lo que aprendemos. Eso se refleja en lo que hacemos, desde un curso para quienes empiezan a programar hasta un hackatón organizado en nuestro propio campus.
+          <p class="hero-description">
+            Somos un grupo estudiantil de la División de Ingenierías de la Universidad de Guanajuato, Campus Irapuato-Salamanca. Nos reúne el interés por la tecnología y por compartir lo que aprendemos.
           </p>
-          <UButton to="/#registro" class="bee-button mt-8">
-            Únete a BeeDevelopers
-          </UButton>
+          <div class="hero-actions">
+            <UButton to="/#registro" class="bee-button" trailing-icon="i-lucide-arrow-right">
+              Únete a BeeDevelopers
+            </UButton>
+            <UButton to="#historia" color="neutral" variant="outline" class="bee-ghost-button">
+              Nuestra historia
+            </UButton>
+          </div>
         </div>
+
+        <ConocenosTerminal :milestones="milestones" :activities="activities" :values="values" />
       </div>
     </section>
 
     <!-- Índice de secciones · barra fija -->
     <nav class="sticky top-0 z-20 border-b border-(--bee-border) bg-white/95 backdrop-blur" aria-label="Secciones de la página">
-      <ul class="mx-auto flex max-w-(--bee-content-max) gap-2 overflow-x-auto px-(--bee-gutter) py-3">
+      <ul class="mx-auto flex max-w-(--bee-page-max) gap-1.5 overflow-x-auto px-(--bee-gutter) py-3">
         <li v-for="section in pageSections" :key="section.id" class="flex-none">
           <a
             :href="`#${section.id}`"
@@ -141,7 +155,7 @@ const joinOptions = [
       </ul>
     </nav>
 
-    <!-- 2. Historia: hitos + apoyos (discreto) · blanco -->
+    <!-- 2. Historia: línea de tiempo + apoyos (discreto) · crema -->
     <section id="historia" class="home-section scroll-mt-24! bg-(--bee-cream)" aria-labelledby="historia-title">
       <div class="home-container">
         <p class="section-label">
@@ -151,28 +165,28 @@ const joinOptions = [
           Nuestra historia
         </h2>
 
-        <!-- Línea de tiempo vertical: hitos alternados a los lados en escritorio, a la derecha de la línea en móvil -->
         <ol class="timeline">
           <li v-for="milestone in milestones" :key="milestone.title" class="timeline-item">
-            <div class="timeline-marker">
-              <svg aria-hidden="true" viewBox="0 0 56 64">
-                <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="#ffda4a" stroke="#fff" stroke-width="3" />
+            <div class="timeline-marker" aria-hidden="true">
+              <svg viewBox="0 0 56 64">
+                <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="#ffda4a" stroke="#fffbef" stroke-width="4" />
               </svg>
-              <span class="timeline-year">{{ milestone.year }}</span>
             </div>
             <div class="timeline-body lift">
+              <p class="timeline-year">
+                {{ milestone.year }}
+              </p>
               <h3>{{ milestone.title }}</h3>
               <p>{{ milestone.text }}</p>
             </div>
           </li>
         </ol>
 
-        <!-- Apoyos: franja secundaria, sin protagonismo -->
-        <div class="mt-12 flex flex-wrap items-baseline gap-x-6 gap-y-2 border-t border-(--bee-border) pt-6">
-          <p class="font-mono text-[13px] tracking-[.08em] uppercase">
+        <div class="about-supporters">
+          <p class="about-supporters-label">
             Con el apoyo de
           </p>
-          <ul class="flex flex-wrap gap-x-6 gap-y-2 text-[15px] font-medium text-(--bee-navy)">
+          <ul>
             <li v-for="supporter in supporters" :key="supporter">
               {{ supporter }}
             </li>
@@ -181,7 +195,7 @@ const joinOptions = [
       </div>
     </section>
 
-    <!-- 3. Misión, visión y objetivos · crema -->
+    <!-- 3. Misión, visión y objetivos · blanco -->
     <section id="mision" class="home-section scroll-mt-24!" aria-labelledby="mision-title">
       <div class="home-container">
         <p class="section-label">
@@ -190,36 +204,45 @@ const joinOptions = [
         <h2 id="mision-title" class="section-heading">
           Lo que nos mueve
         </h2>
-        <div class="mt-10 grid gap-10 md:grid-cols-2">
-          <div>
-            <h3 class="text-xl">
+
+        <div class="about-statements">
+          <article class="about-statement about-statement--dark">
+            <svg class="about-statement-hexagon" aria-hidden="true" viewBox="0 0 56 64">
+              <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+            <h3 class="about-statement-label">
               Misión
             </h3>
-            <p class="mt-3 text-[clamp(16px,1.1vw,19px)] leading-relaxed">
+            <p class="about-statement-text">
               Acercar la tecnología a la comunidad estudiantil de la UG mediante talleres, proyectos y eventos donde los estudiantes puedan aprender, compartir conocimientos y desarrollar sus propias ideas.
             </p>
-          </div>
-          <div>
-            <h3 class="text-xl">
+          </article>
+          <article class="about-statement">
+            <svg class="about-statement-hexagon" aria-hidden="true" viewBox="0 0 56 64">
+              <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="none" stroke="currentColor" stroke-width="2" />
+            </svg>
+            <h3 class="about-statement-label">
               Visión
             </h3>
-            <p class="mt-3 text-[clamp(16px,1.1vw,19px)] leading-relaxed">
+            <p class="about-statement-text">
               Queremos que BeeDevelopers sea un punto de encuentro para estudiantes de la UG que buscan iniciarse en tecnología, profundizar en un tema o impulsar un proyecto que beneficie a su comunidad.
             </p>
-          </div>
+          </article>
         </div>
-        <h3 class="mt-12 text-xl">
-          Objetivos
+
+        <h3 class="about-subheading">
+          Nuestros objetivos
         </h3>
-        <ul class="mt-4 flex max-w-4xl flex-col gap-3 text-[clamp(16px,1.1vw,19px)] leading-relaxed">
-          <li v-for="objective in objectives" :key="objective" class="list-inside list-disc">
-            {{ objective }}
+        <ol class="about-objectives">
+          <li v-for="(objective, index) in objectives" :key="objective">
+            <span class="about-objective-number" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
+            <p>{{ objective }}</p>
           </li>
-        </ul>
+        </ol>
       </div>
     </section>
 
-    <!-- 4. Valores · blanco -->
+    <!-- 4. Valores · crema -->
     <section id="valores" class="home-section scroll-mt-24! bg-(--bee-cream)" aria-labelledby="valores-title">
       <div class="home-container">
         <p class="section-label">
@@ -228,15 +251,16 @@ const joinOptions = [
         <h2 id="valores-title" class="section-heading">
           Nuestros valores
         </h2>
-        <!-- Tarjetas: el diseño visual se define en un paso posterior -->
-        <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-          <li v-for="value in values" :key="value.title">
-            <h3 class="text-xl">
-              {{ value.title }}
-            </h3>
-            <p class="mt-2 text-base leading-relaxed">
-              {{ value.text }}
-            </p>
+        <ul class="about-values">
+          <li v-for="value in values" :key="value.title" class="about-value lift">
+            <span class="about-value-icon" aria-hidden="true">
+              <svg viewBox="0 0 56 64">
+                <polygon points="28,2 54,17 54,47 28,62 2,47 2,17" fill="#ffda4a" />
+              </svg>
+              <UIcon :name="value.icon" class="relative size-6" />
+            </span>
+            <h3>{{ value.title }}</h3>
+            <p>{{ value.text }}</p>
           </li>
         </ul>
       </div>
@@ -254,79 +278,120 @@ const joinOptions = [
               Lo que hacemos juntos
             </h2>
           </div>
-          <p class="max-w-xl text-[clamp(16px,1.1vw,19px)] leading-relaxed text-(--bee-text-on-dark)">
+          <p class="about-section-intro about-section-intro--on-dark">
             Desde nuestras primeras actividades hemos creado eventos propios y colaborado con otros grupos organizados de la División.
           </p>
         </div>
-        <!-- Tarjetas con foto: pendientes de imágenes -->
-        <ul class="mt-10 grid gap-6 md:grid-cols-2">
-          <li v-for="activity in activities" :key="activity.title">
-            <h3 class="text-xl text-white!">
-              {{ activity.title }}
-            </h3>
-            <p class="mt-2 text-base leading-relaxed text-(--bee-text-on-dark)">
-              {{ activity.text }}
-            </p>
+        <ul class="about-activities">
+          <li v-for="activity in activities" :key="activity.title" class="about-activity lift">
+            <!-- Foto pendiente: reemplazar por NuxtImg cuando esté en public/images/ -->
+            <div class="about-photo-placeholder about-photo-placeholder--dark" aria-hidden="true">
+              [foto · {{ activity.title }}]
+            </div>
+            <div class="about-activity-body">
+              <span class="about-activity-tag">{{ activity.tag }}</span>
+              <h3>{{ activity.title }}</h3>
+              <p>{{ activity.text }}</p>
+            </div>
           </li>
         </ul>
       </div>
     </section>
 
-    <!-- 6. Comunidad: fotos de convivencia + enlace a la galería · crema -->
+    <!-- 6. Comunidad: mosaico de fotos de convivencia + enlace a la galería · crema -->
     <section id="comunidad" class="home-section scroll-mt-24! bg-(--bee-cream)" aria-labelledby="comunidad-title">
       <div class="home-container">
-        <p class="section-label">
-          // nuestra comunidad
-        </p>
-        <h2 id="comunidad-title" class="section-heading">
-          [Título de comunidad]
-        </h2>
-        <p class="mt-5 max-w-3xl text-[clamp(16px,1.1vw,19px)] leading-relaxed">
-          [Fotos de reuniones, toma de protesta y convivencias: pendientes.]
-        </p>
-        <UButton to="/galeria" color="neutral" variant="outline" class="mt-8 min-h-11 rounded-lg px-6 text-sm font-semibold text-(--bee-navy) ring-(--bee-navy)">
-          Ver galería completa
-        </UButton>
+        <div class="section-head">
+          <div>
+            <p class="section-label">
+              // nuestra comunidad
+            </p>
+            <h2 id="comunidad-title" class="section-heading">
+              [Título de comunidad]
+            </h2>
+          </div>
+          <UButton to="/galeria" color="neutral" variant="outline" trailing-icon="i-lucide-arrow-right" class="min-h-11 rounded-lg px-6 text-sm font-semibold text-(--bee-navy) ring-(--bee-navy)">
+            Ver galería completa
+          </UButton>
+        </div>
+        <!-- Fotos pendientes: reemplazar cada lugar por NuxtImg cuando estén en public/images/ -->
+        <ul class="about-mosaic" aria-hidden="true">
+          <li v-for="photo in communityPhotos" :key="photo" class="about-photo-placeholder">
+            [foto · {{ photo }}]
+          </li>
+        </ul>
       </div>
     </section>
 
     <!-- 7. Preguntas frecuentes · blanco -->
     <section id="preguntas" class="home-section scroll-mt-24!" aria-labelledby="preguntas-title">
-      <div class="home-container max-w-4xl!">
-        <p class="section-label">
-          // preguntas frecuentes
-        </p>
-        <h2 id="preguntas-title" class="section-heading">
-          Preguntas frecuentes
-        </h2>
-        <UAccordion :items="faqItems" class="mt-8" />
+      <div class="home-container about-faq">
+        <div class="about-faq-intro">
+          <p class="section-label">
+            // preguntas frecuentes
+          </p>
+          <h2 id="preguntas-title" class="section-heading">
+            ¿Tienes dudas?
+          </h2>
+          <p class="about-section-intro">
+            Si no encuentras tu respuesta, escríbenos por nuestras redes sociales.
+          </p>
+        </div>
+        <UAccordion
+          :items="faqItems"
+          class="about-faq-list"
+          :ui="{
+            item: 'border-b border-(--bee-border)',
+            trigger: 'min-h-16 py-4 gap-4 text-left',
+            label: 'font-display text-lg md:text-xl font-semibold text-(--bee-navy)',
+            trailingIcon: 'size-6 text-(--bee-navy)',
+            body: 'pb-6 text-base md:text-[17px] leading-relaxed max-w-[40em]',
+          }"
+        />
       </div>
     </section>
 
-    <!-- 8. Únete: qué puedes hacer + llamada a la acción · navy + panal -->
-    <section id="unete" class="home-section relative isolate scroll-mt-24! overflow-hidden bg-(--bee-header)" aria-labelledby="unete-title">
-      <HoneycombPattern class="opacity-[.07]" />
-      <div class="home-container">
-        <p class="section-label section-label--on-dark">
-          // únete
-        </p>
-        <h2 id="unete-title" class="section-heading section-heading--on-dark">
-          Qué puedes hacer al unirte
-        </h2>
-        <ul class="mt-8 flex max-w-4xl flex-col gap-4 text-[clamp(16px,1.1vw,19px)] leading-relaxed text-(--bee-text-on-dark)">
-          <li v-for="option in joinOptions" :key="option.title">
-            <strong class="font-semibold text-white">{{ option.title }}</strong> {{ option.text }}
-          </li>
-        </ul>
-        <p class="mt-6 max-w-4xl text-[15px] leading-relaxed text-(--bee-text-on-dark)">
-          Algunas actividades otorgan horas formativas. Si te interesa hacer tu servicio social con nosotros, escríbenos por nuestras redes sociales.
-        </p>
-        <p class="mt-10 max-w-3xl text-[clamp(17px,1.25vw,22px)] leading-relaxed text-white">
-          ¿Te interesa participar en un taller, sumarte a un proyecto u organizar un evento con el grupo? Completa el formulario de registro.
-        </p>
-        <UButton to="/#registro" class="bee-button mt-6">
-          Únete a BeeDevelopers
-        </UButton>
+    <!-- 8. Únete: reutiliza el estilo de la sección de registro del inicio · navy + panal -->
+    <section id="unete" class="home-section registration-section scroll-mt-24!" aria-labelledby="unete-title">
+      <HoneycombPattern class="registration-honeycomb" />
+      <div class="home-container registration-layout about-join">
+        <div class="registration-intro">
+          <p class="section-label section-label--on-dark">
+            // únete
+          </p>
+          <h2 id="unete-title" class="section-heading section-heading--on-dark">
+            Qué puedes hacer al unirte
+          </h2>
+          <ol class="join-steps">
+            <li v-for="(option, index) in joinOptions" :key="option.title" class="join-step">
+              <div class="join-step-marker" aria-hidden="true">
+                <span class="join-step-number">{{ index + 1 }}</span>
+              </div>
+              <div class="join-step-body">
+                <h3>{{ option.title }}</h3>
+                <p>{{ option.text }}</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="registration-panel">
+          <h3>¿Te interesa participar en un taller, sumarte a un proyecto u organizar un evento?</h3>
+          <p class="registration-note">
+            Completa el formulario de registro y súmate al grupo.
+          </p>
+          <UButton to="/#registro" class="bee-button about-join-button" trailing-icon="i-lucide-arrow-right">
+            Únete a BeeDevelopers
+          </UButton>
+          <div class="about-join-contact">
+            <p>Algunas actividades otorgan horas formativas. Para servicio social, escríbenos:</p>
+            <ul>
+              <li v-for="social in socialLinks" :key="social.name">
+                <a :href="social.href" :aria-label="social.label" target="_blank" rel="noopener noreferrer">{{ social.name }}</a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   </main>
