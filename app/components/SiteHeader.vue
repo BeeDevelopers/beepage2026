@@ -5,7 +5,7 @@ const isConoceDicisHeader = computed(() => currentSiteRoute.path.startsWith('/co
 
 const pendingPages = [
   { label: 'Conócenos más', to: '/conocenos' },
-  { label: 'Beneficios de tu correo', disabled: true },
+  { label: 'Beneficios de tu correo', to: '/beneficios' },
   { label: 'Conoce DICIS', to: '/conoce-dicis' },
   { label: 'Galería', to: '/galeria' },
 ]

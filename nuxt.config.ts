@@ -27,4 +27,10 @@ export default defineNuxtConfig({
   image: {
     provider: 'ipx',
   },
+  runtimeConfig: {
+    supabaseUrl: '',
+    supabaseServiceKey: '',
+    supabaseBucket: 'registros-fotos',
+    supabaseTable: 'registros',
+  },
 })
