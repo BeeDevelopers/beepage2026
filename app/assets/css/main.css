@@ -429,23 +429,42 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 3px s
 .benefits-detail-aside p { margin-top: 18px; font-size: 13px; line-height: 1.7; }
 .benefits-source-host { color: var(--bee-yellow); overflow-wrap: anywhere; }
 .benefit-guide-trigger { width: 100%; }
-.benefit-guide-modal { width: min(720px, calc(100vw - 32px)); }
-.benefit-guide-modal-body { max-height: min(72vh, 760px); overflow-y: auto; }
-.benefit-guide-content { color: var(--bee-text); }
-.benefit-guide-content section + section { margin-top: 28px; }
-.benefit-guide-content h2 { margin: 0 0 10px; color: var(--bee-navy); font-size: clamp(20px, 2vw, 26px); }
-.benefit-guide-content ul, .benefit-guide-content ol { margin: 0; padding-left: 22px; }
-.benefit-guide-content li { margin-top: 8px; line-height: 1.65; }
-.benefit-guide-content li::marker { color: var(--bee-yellow-ink); font-weight: 700; }
-.benefit-guide-status { margin: 0 0 24px; padding: 10px 12px; border-left: 4px solid var(--bee-yellow); background: var(--bee-cream); color: var(--bee-navy); font-size: 14px; line-height: 1.5; }
+.benefit-guide-modal { display: flex; width: min(940px, calc(100vw - 32px)); max-width: min(940px, calc(100vw - 32px)); height: min(calc(100dvh - 32px), 900px); max-height: calc(100dvh - 32px); overflow: hidden; flex-direction: column; border-radius: 16px; box-shadow: 0 30px 60px rgb(0 0 0 / 30%); }
+.benefit-guide-modal-header { display: block; position: relative; flex: 0 0 auto; padding: clamp(24px, 3vw, 38px) clamp(68px, 7vw, 88px) clamp(22px, 2.6vw, 32px) clamp(24px, 4vw, 48px); border-bottom: 4px solid var(--bee-yellow); background: var(--bee-cream); }
+.benefit-guide-modal-header::before { display: none; }
+.benefit-guide-modal-title { max-width: 100%; color: var(--bee-navy); font-size: clamp(24px, 3vw, 38px); line-height: 1.1; letter-spacing: -.025em; overflow-wrap: anywhere; }
+.benefit-guide-modal-description { max-width: 100%; margin-top: 14px; color: var(--bee-text); font-size: clamp(15px, 1.2vw, 17px); line-height: 1.65; overflow-wrap: anywhere; }
+.benefit-guide-modal-body { min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; flex: 1 1 auto; padding: clamp(24px, 3.5vw, 42px) clamp(24px, 4vw, 48px) clamp(28px, 4vw, 48px); }
+.benefit-guide-content { min-width: 0; max-width: 880px; margin-inline: auto; overflow-wrap: anywhere; color: var(--bee-text); }
+.benefit-guide-intro { display: grid; gap: 14px; padding-bottom: 2px; }
+.benefit-guide-kicker { color: var(--bee-yellow-ink); font-family: var(--font-mono); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.benefit-guide-columns { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: 'requirements' 'steps' 'considerations'; gap: 16px; margin-top: 24px; }
+.benefit-guide-panel { min-width: 0; margin: 0 !important; padding: 20px; border: 1px solid var(--bee-border); border-radius: 14px; background: var(--bee-surface); }
+.benefit-guide-panel--requirements { grid-area: requirements; background: var(--bee-surface); }
+.benefit-guide-panel--steps { grid-area: steps; background: #fff; }
+.benefit-guide-panel--considerations { grid-area: considerations; align-self: start; }
+.benefit-guide-section-heading { display: block; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid var(--bee-yellow); }
+.benefit-guide-content h2 { margin: 0; color: var(--bee-navy); font-size: clamp(18px, 1.8vw, 24px); line-height: 1.2; }
+.benefit-guide-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.benefit-guide-list li { padding: 13px 15px; border: 1px solid var(--bee-border); border-radius: 10px; background: var(--bee-surface); line-height: 1.6; }
+.benefit-guide-requirements li { border-left: 3px solid var(--bee-yellow); }
+.benefit-guide-steps { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.benefit-guide-steps li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 12px; align-items: start; padding: 14px 15px; border: 1px solid var(--bee-border); border-radius: 10px; background: #fff; line-height: 1.65; }
+.benefit-guide-step-number { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--bee-yellow); color: var(--bee-header); font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+.benefit-guide-considerations li { border-left: 4px solid var(--bee-yellow); background: var(--bee-cream); }
+.benefit-guide-status { margin: 0; padding: 11px 14px; border-left: 4px solid var(--bee-yellow); background: var(--bee-cream); color: var(--bee-navy); font-size: 14px; line-height: 1.5; }
 .benefit-guide-status--limitada { border-left-color: #c58b00; }
 .benefit-guide-status--historica { border-left-color: #a65d5d; }
 .benefit-guide-test-note { margin: 0 0 24px; padding: 12px 14px; border-left: 4px solid var(--bee-yellow-ink); background: var(--bee-cream); color: var(--bee-text); font-size: 14px; line-height: 1.6; }
 .benefit-guide-test-note--confirmado { border-left-color: #34845b; }
 .benefit-guide-test-note--pendiente { border-left-color: #c58b00; }
 .benefit-guide-test-note--error { border-left-color: #b45b5b; }
-.benefit-guide-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--bee-border); }
+.benefit-guide-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; margin-top: 24px; padding-top: 22px; border-top: 1px solid var(--bee-border); }
 .benefit-guide-footer p { margin: 0; color: var(--bee-text); font-size: 13px; line-height: 1.5; }
+.benefit-guide-actions { display: flex; min-width: 0; flex-wrap: wrap; justify-content: flex-end; gap: 10px; }
+.benefit-guide-actions .bee-button { max-width: 100%; }
+.benefit-guide-secondary { border: 1px solid var(--bee-navy); background: transparent; color: var(--bee-navy); }
+.benefit-guide-secondary:hover { background: var(--bee-navy); color: #fff; }
 .benefits-related { margin-top: 36px; }
 .benefits-related > h2 { font-size: clamp(22px, 2vw, 30px); margin-bottom: 20px; }
 .benefits-related .benefits-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -456,7 +475,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 3px s
 .ug-guide-page { min-height: 70vh; padding-bottom: clamp(56px, 8vw, 128px); background: #fff; color: var(--bee-text); }
 .ug-guide-hero { position: relative; isolation: isolate; overflow: hidden; color: #fff; background: var(--bee-header); }
 .ug-guide-honeycomb { left: auto; right: 0; width: 48%; opacity: .12; mask-image: linear-gradient(90deg, transparent, #000); }
-.ug-guide-hero-inner { position: relative; padding-top: clamp(34px, 4vw, 64px); padding-bottom: clamp(42px, 6vw, 88px); }
+.ug-guide-hero-inner { position: relative; max-width: var(--bee-page-max); box-sizing: border-box; padding: clamp(34px, 4vw, 64px) var(--bee-gutter) clamp(42px, 6vw, 88px); }
 .ug-guide-breadcrumb { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: clamp(34px, 5vw, 64px); color: var(--bee-text-on-dark); font-size: 14px; }
 .ug-guide-breadcrumb a { color: #fff; text-decoration: underline; text-underline-offset: 4px; }
 .ug-guide-kicker { display: inline-flex; align-items: center; gap: 12px; color: var(--bee-yellow); font-family: var(--font-mono); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
@@ -535,20 +554,39 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible { outline: 3px s
   .benefits-filter-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .benefits-search { grid-column: 1 / -1; }
   .benefits-detail-layout { grid-template-columns: 1fr; }
+  .benefits-detail-content, .benefits-detail-aside { padding: clamp(20px, 4vw, 30px); }
   .ug-guide-layout { grid-template-columns: 1fr; }
   .ug-guide-sidebar { position: static; }
+  .ug-guide-main { max-width: 960px; }
 }
 @media (max-width: 540px) {
+  .benefits-page { overflow-x: hidden; }
   .benefits-grid, .benefits-related .benefits-grid { grid-template-columns: minmax(0, 1fr); }
   .benefit-card--featured { grid-column: auto; }
+  .benefit-card--featured .benefit-card-heading, .benefit-card--featured .benefit-summary { max-width: 100%; }
+  .benefit-card--featured .benefit-feature-art { display: none; }
+  .benefit-card-actions { width: 100%; align-items: stretch; }
+  .benefit-card-actions .bee-button, .benefit-card-actions .bee-ghost-button, .benefit-card-actions > a:last-child { flex: 1 1 100%; justify-content: center; }
   .benefits-eyebrow { gap: 8px; font-size: 10px; }
   .benefits-eyebrow i { display: none; }
+  .benefits-filters { border-radius: 16px; }
   .benefits-filter-fields { grid-template-columns: minmax(0, 1fr); }
   .benefits-guide dl { grid-template-columns: 1fr; gap: 6px; }
   .benefits-guide dd { margin-bottom: 14px; }
   .benefits-results > span { display: none; }
+  .benefit-guide-modal { width: calc(100vw - 20px); max-width: calc(100vw - 20px); height: calc(100dvh - 16px); max-height: calc(100dvh - 16px); }
+  .benefit-guide-modal-header { padding: 22px 56px 20px 20px; }
+  .benefit-guide-modal-body { padding: 22px 16px 28px; }
+  .benefit-guide-content { width: 100%; }
+  .benefit-guide-intro { padding-bottom: 18px; }
+  .benefit-guide-columns { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'requirements' 'steps' 'considerations'; gap: 14px; margin-top: 18px; }
+  .benefit-guide-panel { padding: 16px; border-radius: 12px; }
+  .benefit-guide-section-heading { margin-bottom: 12px; padding-bottom: 9px; }
+  .benefit-guide-steps li { grid-template-columns: 30px minmax(0, 1fr); gap: 10px; padding: 13px; }
+  .benefit-guide-step-number { width: 26px; height: 26px; }
   .benefit-guide-footer { align-items: stretch; }
-  .benefit-guide-footer .bee-button { width: 100%; }
+  .benefit-guide-actions { width: 100%; }
+  .benefit-guide-footer .bee-button { flex: 1; width: 100%; }
   .ug-guide-hero-inner { padding-top: 28px; }
   .ug-guide-breadcrumb { margin-bottom: 36px; font-size: 12px; }
   .ug-guide-kicker { font-size: 11px; }

@@ -1,11 +1,26 @@
 export type GuiaEstado = 'orientacion' | 'limitada' | 'historica'
+export type ResultadoDescargaUg = 'descarga' | 'guia' | 'soporte' | 'pendiente'
+
+export interface FlujoDescargaUg {
+  resultado: ResultadoDescargaUg
+  titulo: string
+  descripcion: string
+  enlace?: { texto: string, url: string }
+}
+
+export interface GuiaPaso {
+  titulo: string
+  descripcion: string
+  enlace?: { texto: string, url: string }
+}
 
 export interface GuiaBeneficioUg {
   estado: GuiaEstado
   resumen: string
   requisitos: string[]
   pasos: string[]
-  pasosDetallados?: { titulo: string, descripcion: string, enlace?: { texto: string, url: string } }[]
+  pasosDetallados?: GuiaPaso[]
+  flujoDescarga?: FlujoDescargaUg
   consideraciones: string[]
   acceso?: string
   fuente: string
@@ -44,7 +59,78 @@ const librarySteps = [
   'Si el acceso falla, consulta Atención de Usuarios o la ayuda del Sistema Bibliotecario antes de intentar otro método.',
 ]
 
-export const guiasBeneficiosUg: Record<string, GuiaBeneficioUg> = {
+export const flujoDescargaUg: Record<string, FlujoDescargaUg> = {
+  'microsoft-365-educacion-1-1': {
+    resultado: 'soporte',
+    titulo: 'Si no aparece una licencia',
+    descripcion: 'La prueba realizada mostró Office sin licencia. En ese caso no intentes descargarlo por otra vía: solicita indicaciones a soporte de la UG.',
+    enlace: { texto: 'Escribir a soporte UG', url: 'mailto:soporte@ugto.mx' },
+  },
+  'aplicaciones-office-de-escritorio-1-2': {
+    resultado: 'soporte',
+    titulo: 'Si la licencia de escritorio no está disponible',
+    descripcion: 'La instalación depende de que tu cuenta tenga una licencia asignada. Si el portal no la muestra, solicita indicaciones a soporte de la UG.',
+    enlace: { texto: 'Escribir a soporte UG', url: 'mailto:soporte@ugto.mx' },
+  },
+  'onedrive-institucional-1-3': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'La prueba abrió un formulario. Después de enviarlo, revisa el correo institucional para saber si recibes una descarga, una guía adicional o una indicación de soporte.',
+  },
+  'microsoft-teams-1-4': {
+    resultado: 'soporte',
+    titulo: 'Si el enlace recibido muestra un error',
+    descripcion: 'La prueba recibió el correo, pero el enlace mostró un error XML. Conserva el mensaje y solicita a soporte de la UG el enlace vigente.',
+    enlace: { texto: 'Escribir a soporte UG', url: 'mailto:soporte@ugto.mx' },
+  },
+  'microsoft-forms-1-5': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'No se ha comprobado el resultado de descarga para esta aplicación. Revisa el correo institucional y sigue únicamente el enlace o la guía que recibas.',
+  },
+  'microsoft-stream-1-6': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'No se ha comprobado el resultado de descarga para esta aplicación. Revisa el correo institucional y sigue únicamente el enlace o la guía que recibas.',
+  },
+  'microsoft-whiteboard-1-7': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'No se ha comprobado el resultado de descarga para esta aplicación. Revisa el correo institucional y sigue únicamente el enlace o la guía que recibas.',
+  },
+  'minecraft-education-1-8': {
+    resultado: 'guia',
+    titulo: 'Cuando recibas el correo',
+    descripcion: 'Abre el mensaje en tu correo institucional y utiliza la ventana o guía de descarga que se muestre. La guía observada para Minecraft Education permite continuar con la instalación.',
+  },
+  'adobe-creative-cloud-ug-1-9': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'No se ha comprobado si el proceso entrega una descarga directa, una guía o una autorización previa. Revisa el mensaje institucional y no instales Creative Cloud hasta confirmar la licencia.',
+  },
+  'power-bi-licencia-institucional-adicional-1-10': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'El procedimiento de solicitud o asignación aún no está confirmado. Revisa el correo institucional y no presentes la licencia como disponible hasta recibir una indicación oficial.',
+  },
+  'microsoft-visio-licencia-adicional-1-11': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'El procedimiento de solicitud o asignación aún no está confirmado. Revisa el correo institucional y no presentes la licencia como disponible hasta recibir una indicación oficial.',
+  },
+  'microsoft-project-licencia-adicional-1-12': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'El procedimiento de solicitud o asignación aún no está confirmado. Revisa el correo institucional y no presentes la licencia como disponible hasta recibir una indicación oficial.',
+  },
+  'antivirus-institucional-1-13': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'La fuente institucional no identifica en esta guía el instalador vigente. Revisa el correo recibido y utiliza solo la descarga o guía que proporcione la UG.',
+  },
+}
+
+export const contenidoGuiasUG: Record<string, GuiaBeneficioUg> = {
   'microsoft-365-educacion-1-1': {
     estado: 'orientacion',
     resumen: 'La UG describe el acceso a herramientas Microsoft 365 mediante la cuenta institucional. La disponibilidad depende de la licencia asignada.',

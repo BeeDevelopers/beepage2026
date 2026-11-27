@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { beneficios, estadosBeneficio, tiposBeneficio, iconoBeneficio } from '~/utils/beneficios'
-import { guiasBeneficiosUg } from '~/data/guiasBeneficiosUg'
+import { obtenerGuia } from '~/data/mapaGuiasCatalogo'
 
 const route = useRoute()
 const beneficio = computed(() => beneficios.find(item => item.id === route.params.id))
@@ -8,8 +8,12 @@ if (!beneficio.value) throw createError({ statusCode: 404, statusMessage: 'Benef
 useSeoMeta({ title: () => `${beneficio.value?.nombre} | Beneficios BeeDevelopers`, description: () => beneficio.value?.resumen })
 const related = computed(() => beneficios.filter(item => item.categoria === beneficio.value?.categoria && item.id !== beneficio.value?.id).slice(0, 3))
 const sourceHost = computed(() => beneficio.value ? new URL(beneficio.value.urlFuente).hostname : '')
-const guia = computed(() => beneficio.value ? guiasBeneficiosUg[beneficio.value.id] : undefined)
-const esGuiaUg = computed(() => beneficio.value?.grupo === 'Servicios y beneficios oficiales UG')
+const guia = computed(() => beneficio.value ? obtenerGuia(beneficio.value.id) : undefined)
+const guiaPagina = computed(() => {
+  if (!guia.value || guia.value.tipo !== 'pagina') return undefined
+  const path = `/beneficios/guia/${guia.value.destinoId}`
+  return guia.value.ancla ? `${path}#${guia.value.ancla}` : path
+})
 const guiaAbierta = ref(false)
 </script>
 
@@ -38,21 +42,22 @@ const guiaAbierta = ref(false)
           <p class="benefits-detail-date">Revisión documental: 18 de noviembre de 2026. Las referencias de precio corresponden al documento de esa fecha; no son una cotización actual.</p>
         </article>
         <div class="benefits-detail-aside-wrap">
-          <aside class="benefits-detail-aside">
-            <h2>Comprueba tu acceso</h2><ol><li>Abre la fuente y revisa la oferta vigente.</li><li>Verifica los requisitos de tu campus, país o matrícula.</li><li>Completa la validación únicamente en el sitio oficial.</li></ol>
+            <aside class="benefits-detail-aside">
+            <h2>Comprueba tu acceso</h2><ol><li>Abre la fuente y revisa la oferta vigente.</li><li>Verifica los requisitos de tu campus, país, matrícula o cuenta del proveedor.</li><li>Completa la validación únicamente en el sitio oficial.</li></ol>
             <UButton :to="beneficio.urlFuente" target="_blank" rel="noopener noreferrer" class="bee-button" trailing-icon="i-lucide-arrow-up-right">Ver condiciones / fuente</UButton>
             <p class="benefits-source-host">{{ sourceHost }}</p>
-            <p>La disponibilidad, licencia y condiciones dependen de la Universidad de Guanajuato y de la cuenta institucional.</p>
+            <p v-if="beneficio.grupo === 'Servicios y beneficios oficiales UG'">La disponibilidad, licencia y condiciones dependen de la Universidad de Guanajuato y de la cuenta institucional.</p>
+            <p v-else>La elegibilidad, precio, licencia y condiciones dependen del proveedor y pueden cambiar según tu país, cuenta o situación académica.</p>
             <p v-if="beneficio.estado === 'github_pack'">GitHub Education debe aprobar tu cuenta. UG no se presenta como socio de los proveedores del pack.</p>
           </aside>
           <UButton
-            v-if="guia && esGuiaUg"
-            :to="`/beneficios/guia/${beneficio.id}`"
+            v-if="guiaPagina"
+            :to="guiaPagina"
             class="bee-button benefit-guide-trigger"
             trailing-icon="i-lucide-arrow-right"
             :aria-label="`Abrir guía completa de ${beneficio.nombre}`"
           >
-            Abrir guía completa
+            Ver guía completa
           </UButton>
           <UButton
             v-else-if="guia"
@@ -71,47 +76,70 @@ const guiaAbierta = ref(false)
     </div>
 
     <UModal
-      v-if="guia && !esGuiaUg"
+      v-if="guia && guia.tipo === 'modal'"
       v-model:open="guiaAbierta"
       :title="`Guía de acceso: ${beneficio.nombre}`"
       :description="guia.resumen"
-      :ui="{ content: 'benefit-guide-modal', body: 'benefit-guide-modal-body' }"
+      :ui="{ content: 'benefit-guide-modal', header: 'benefit-guide-modal-header', title: 'benefit-guide-modal-title', description: 'benefit-guide-modal-description', body: 'benefit-guide-modal-body' }"
     >
       <template #body>
         <div class="benefit-guide-content">
-          <p class="benefit-guide-status" :class="`benefit-guide-status--${guia.estado}`">
+          <div class="benefit-guide-intro">
+            <p class="benefit-guide-status" :class="`benefit-guide-status--${guia.estado}`">
             {{ guia.estado === 'historica' ? 'Registro histórico' : guia.estado === 'limitada' ? 'Orientación limitada por la fuente' : 'Orientación basada en la fuente institucional' }}
-          </p>
+            </p>
+          </div>
 
-          <section aria-labelledby="guide-requirements-title">
-            <h2 id="guide-requirements-title">Antes de comenzar</h2>
-            <ul>
-              <li v-for="requirement in guia.requisitos" :key="requirement">{{ requirement }}</li>
-            </ul>
-          </section>
+          <div class="benefit-guide-columns">
+            <section class="benefit-guide-panel benefit-guide-panel--requirements" :aria-labelledby="`guide-requirements-title-${beneficio.id}`">
+              <div class="benefit-guide-section-heading">
+                <h2 :id="`guide-requirements-title-${beneficio.id}`">Antes de comenzar</h2>
+              </div>
+              <ul class="benefit-guide-list benefit-guide-requirements">
+                <li v-for="requirement in guia.requisitos" :key="requirement">
+                  <span>{{ requirement }}</span>
+                </li>
+              </ul>
+            </section>
 
-          <section aria-labelledby="guide-steps-title">
-            <h2 id="guide-steps-title">Cómo acceder o utilizarlo</h2>
-            <ol>
-              <li v-for="step in guia.pasos" :key="step">{{ step }}</li>
-            </ol>
-          </section>
+            <section class="benefit-guide-panel benefit-guide-panel--steps" :aria-labelledby="`guide-steps-title-${beneficio.id}`">
+              <div class="benefit-guide-section-heading">
+                <h2 :id="`guide-steps-title-${beneficio.id}`">Cómo acceder o utilizarlo</h2>
+              </div>
+              <ol class="benefit-guide-steps">
+                <li v-for="(step, index) in guia.pasos" :key="step">
+                  <span class="benefit-guide-step-number" aria-hidden="true">{{ index + 1 }}</span>
+                  <span>{{ step }}</span>
+                </li>
+              </ol>
+            </section>
 
-          <section aria-labelledby="guide-considerations-title">
-            <h2 id="guide-considerations-title">Consideraciones</h2>
-            <ul>
-              <li v-for="consideration in guia.consideraciones" :key="consideration">{{ consideration }}</li>
-            </ul>
-          </section>
+            <section class="benefit-guide-panel benefit-guide-panel--considerations" :aria-labelledby="`guide-considerations-title-${beneficio.id}`">
+              <div class="benefit-guide-section-heading">
+                <h2 :id="`guide-considerations-title-${beneficio.id}`">Consideraciones</h2>
+              </div>
+              <ul class="benefit-guide-list benefit-guide-considerations">
+                <li v-for="consideration in guia.consideraciones" :key="consideration">{{ consideration }}</li>
+              </ul>
+            </section>
+          </div>
 
           <footer class="benefit-guide-footer">
             <p>Fuente revisada: {{ guia.fechaRevision }}.</p>
-            <UButton v-if="guia.acceso" :to="guia.acceso" target="_blank" rel="noopener noreferrer" class="bee-button" trailing-icon="i-lucide-external-link">
-              Abrir plataforma
-            </UButton>
-            <UButton :to="guia.fuente" target="_blank" rel="noopener noreferrer" class="bee-button" trailing-icon="i-lucide-arrow-up-right">
-              Abrir fuente oficial
-            </UButton>
+            <div class="benefit-guide-actions">
+              <UButton :to="guia.acceso || guia.fuente" target="_blank" rel="noopener noreferrer" class="bee-button">
+                Abrir sitio oficial
+              </UButton>
+              <UButton
+                v-if="guia.acceso && guia.acceso !== guia.fuente"
+                :to="guia.fuente"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="bee-button benefit-guide-secondary"
+              >
+                Ver fuente
+              </UButton>
+            </div>
           </footer>
         </div>
       </template>

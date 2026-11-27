@@ -1,18 +1,36 @@
 <script setup lang="ts">
 import { beneficios, estadosBeneficio, iconoBeneficio } from '~/utils/beneficios'
-import { guiasBeneficiosUg } from '~/data/guiasBeneficiosUg'
+import { obtenerGuia } from '~/data/mapaGuiasCatalogo'
+import type { GuiaPaso } from '~/data/contenidoGuiasUG'
 
 const route = useRoute()
-const beneficio = computed(() => beneficios.find(item => item.id === route.params.id && item.grupo === 'Servicios y beneficios oficiales UG'))
-const guia = computed(() => beneficio.value ? guiasBeneficiosUg[beneficio.value.id] : undefined)
+const requestedId = String(route.params.id)
+const guiaSolicitada = obtenerGuia(requestedId)
+const canonicalId = guiaSolicitada?.destinoId ?? requestedId
+const guia = computed(() => obtenerGuia(canonicalId))
+const beneficio = computed(() => beneficios.find(item => item.id === canonicalId))
 
-if (!beneficio.value || !guia.value) {
+if (!beneficio.value || !guia.value || guia.value.tipo !== 'pagina') {
   throw createError({ statusCode: 404, statusMessage: 'Guía no encontrada' })
 }
 
 useSeoMeta({
   title: () => `Guía de ${beneficio.value?.nombre} | BeeDevelopers`,
   description: () => guia.value?.resumen,
+})
+
+const pasos = computed<GuiaPaso[]>(() => {
+  if (guia.value?.pasosDetallados) return guia.value.pasosDetallados
+
+  return (guia.value?.pasos ?? []).map((descripcion, stepIndex): GuiaPaso => ({
+    titulo: [
+      'Revisa la información publicada',
+      'Comprueba los requisitos',
+      'Sigue el procedimiento indicado',
+      'Confirma el resultado',
+    ][stepIndex] || `Paso ${stepIndex + 1}`,
+    descripcion,
+  }))
 })
 </script>
 
@@ -31,7 +49,7 @@ useSeoMeta({
 
         <p class="ug-guide-kicker">
           <span class="benefit-icon"><UIcon :name="iconoBeneficio(beneficio)" /></span>
-          Guía de servicio UG
+          {{ beneficio.grupo === 'Servicios y beneficios oficiales UG' ? 'Guía de servicio UG' : 'Guía de acceso' }}
         </p>
         <h1>{{ beneficio.nombre }}<span>;</span></h1>
         <p class="ug-guide-lead">{{ guia.resumen }}</p>
@@ -48,13 +66,44 @@ useSeoMeta({
           <section class="ug-guide-section ug-guide-steps-section" aria-labelledby="guide-steps-title">
             <h2 id="guide-steps-title">Cómo acceder o utilizarlo</h2>
             <ol class="ug-guide-steps">
-              <li v-for="(step, index) in guia.pasosDetallados || guia.pasos.map((descripcion, stepIndex) => ({ titulo: [ 'Revisa la información publicada', 'Comprueba los requisitos', 'Sigue el procedimiento indicado', 'Confirma el resultado' ][stepIndex] || `Paso ${stepIndex + 1}`, descripcion }))" :key="step.titulo + step.descripcion">
+              <li v-for="(step, index) in pasos" :key="step.titulo + step.descripcion">
                 <span class="ug-guide-step-number" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
                 <div>
                   <h3>{{ step.titulo }}</h3>
                   <p>{{ step.descripcion }}</p>
                   <a v-if="step.enlace" class="ug-guide-inline-link" :href="step.enlace.url" target="_blank" rel="noopener noreferrer">
                     {{ step.enlace.texto }}
+                    <UIcon name="i-lucide-arrow-up-right" aria-hidden="true" />
+                  </a>
+                </div>
+              </li>
+            </ol>
+          </section>
+
+          <section v-if="guia.flujoDescarga" class="ug-guide-section ug-guide-download-section" aria-labelledby="guide-download-title">
+            <h2 id="guide-download-title">Después de seleccionar descargar</h2>
+            <ol class="ug-guide-steps ug-guide-steps--compact">
+              <li>
+                <span class="ug-guide-step-number" aria-hidden="true">01</span>
+                <div>
+                  <h3>Ve a tu correo institucional</h3>
+                  <p>Después de solicitar la aplicación, abre tu correo institucional y revisa la bandeja de entrada y el correo no deseado.</p>
+                </div>
+              </li>
+              <li>
+                <span class="ug-guide-step-number" aria-hidden="true">02</span>
+                <div>
+                  <h3>Abre el mensaje recibido</h3>
+                  <p>Lee el correo de la UG y abre la ventana del explorador, el enlace de descarga o la guía que indique el mensaje.</p>
+                </div>
+              </li>
+              <li>
+                <span class="ug-guide-step-number" aria-hidden="true">03</span>
+                <div>
+                  <h3>{{ guia.flujoDescarga.titulo }}</h3>
+                  <p>{{ guia.flujoDescarga.descripcion }}</p>
+                  <a v-if="guia.flujoDescarga.enlace" class="ug-guide-inline-link" :href="guia.flujoDescarga.enlace.url" target="_blank" rel="noopener noreferrer">
+                    {{ guia.flujoDescarga.enlace.texto }}
                     <UIcon name="i-lucide-arrow-up-right" aria-hidden="true" />
                   </a>
                 </div>
