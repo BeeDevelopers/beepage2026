@@ -1,0 +1,460 @@
+export type GuiaEstado = 'orientacion' | 'limitada' | 'historica'
+export type ResultadoDescargaUg = 'descarga' | 'guia' | 'soporte' | 'pendiente'
+
+export interface FlujoDescargaUg {
+  resultado: ResultadoDescargaUg
+  titulo: string
+  descripcion: string
+  enlace?: { texto: string, url: string }
+}
+
+export interface GuiaPaso {
+  titulo: string
+  descripcion: string
+  enlace?: { texto: string, url: string }
+}
+
+export interface GuiaBeneficioUg {
+  estado: GuiaEstado
+  resumen: string
+  requisitos: string[]
+  pasos: string[]
+  pasosDetallados?: GuiaPaso[]
+  flujoDescarga?: FlujoDescargaUg
+  consideraciones: string[]
+  acceso?: string
+  fuente: string
+  fechaRevision: string
+}
+
+const fechaRevision = '20 de noviembre de 2026'
+
+const fuentes = {
+  apoyos: 'https://www.ugto.mx/campusleon/especialidadesmedicas/apoyos-y-servicios',
+  desarrollo: 'https://www3.ugto.mx/accionesug/desarrollo-academico',
+  tic: 'https://nodo.ugto.mx/inventario-de-herramientas-y-plataformas-tic-para-la-educacion/',
+  sistemas: 'https://www.ugto.mx/campusgto/ddpg/estudiantes/unidad-de-sistemas',
+  eduroam: 'https://www.ugto.mx/dsti/eduroam',
+  biblioteca: 'https://www.bibliotecas.ugto.mx/biblioteca-digital/',
+  ebookCentral: 'https://bibliotecas.ugto.mx/biblioteca-digital/access/ebookcentral/',
+  bibliotecaAcceso: 'https://bibliotecas.ugto.mx/biblioteca-digital/access/',
+  serviciosBibliotecarios: 'https://www.bibliotecas.ugto.mx/servicios-bibliotecarios/',
+  becas: 'https://www.ugto.mx/desarrolloestudiantil/becas/programa-de-becas-apoyos-y-estimulos-estudiantiles',
+  becasIntra: 'https://www.ugto.mx/campusleon/dci/estudiantes/tramitessecretariaacademica/becas/becas-ug',
+  transporte: 'https://www.ugto.mx/programas-de-apoyo/transporte-publico-gratuito',
+  continua: 'https://www.ugto.mx/campusleon/educacioncontinua/preguntas-frecuentes',
+  tienda: 'https://www.ugto.mx/noticias/quehacer-institucional/18169-fue-inaugurada-la-tienda-universitaria',
+  credencial: 'https://ugto.mx/tramites-escolares/credencializacion-constancias-e-historial-academico',
+} as const
+
+const softwareSteps = [
+  'Abre la fuente oficial y revisa que el servicio corresponda a tu campus, cuenta y situación académica.',
+  'Ten disponible tu cuenta institucional y completa únicamente la autenticación que solicite el portal oficial.',
+  'Sigue las indicaciones del portal para abrir, solicitar o descargar el servicio. Si el portal no muestra una asignación, no fuerces la activación: consulta al área indicada por la UG.',
+]
+
+const librarySteps = [
+  'Abre la Biblioteca Digital UG y localiza el recurso que deseas consultar.',
+  'Selecciona el acceso del recurso y utiliza tu cuenta institucional o la red autorizada cuando la plataforma lo solicite.',
+  'Si el acceso falla, consulta Atención de Usuarios o la ayuda del Sistema Bibliotecario antes de intentar otro método.',
+]
+
+export const flujoDescargaUg: Record<string, FlujoDescargaUg> = {
+  'microsoft-365-educacion-1-1': {
+    resultado: 'soporte',
+    titulo: 'Si no aparece una licencia',
+    descripcion: 'La prueba realizada mostró Office sin licencia. En ese caso no intentes descargarlo por otra vía: solicita indicaciones a soporte de la UG.',
+    enlace: { texto: 'Escribir a soporte UG', url: 'mailto:soporte@ugto.mx' },
+  },
+  'aplicaciones-office-de-escritorio-1-2': {
+    resultado: 'soporte',
+    titulo: 'Si la licencia de escritorio no está disponible',
+    descripcion: 'La instalación depende de que tu cuenta tenga una licencia asignada. Si el portal no la muestra, solicita indicaciones a soporte de la UG.',
+    enlace: { texto: 'Escribir a soporte UG', url: 'mailto:soporte@ugto.mx' },
+  },
+  'onedrive-institucional-1-3': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'La prueba abrió un formulario. Después de enviarlo, revisa el correo institucional para saber si recibes una descarga, una guía adicional o una indicación de soporte.',
+  },
+  'microsoft-teams-1-4': {
+    resultado: 'soporte',
+    titulo: 'Si el enlace recibido muestra un error',
+    descripcion: 'La prueba recibió el correo, pero el enlace mostró un error XML. Conserva el mensaje y solicita a soporte de la UG el enlace vigente.',
+    enlace: { texto: 'Escribir a soporte UG', url: 'mailto:soporte@ugto.mx' },
+  },
+  'microsoft-forms-1-5': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'No se ha comprobado el resultado de descarga para esta aplicación. Revisa el correo institucional y sigue únicamente el enlace o la guía que recibas.',
+  },
+  'microsoft-stream-1-6': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'No se ha comprobado el resultado de descarga para esta aplicación. Revisa el correo institucional y sigue únicamente el enlace o la guía que recibas.',
+  },
+  'microsoft-whiteboard-1-7': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'No se ha comprobado el resultado de descarga para esta aplicación. Revisa el correo institucional y sigue únicamente el enlace o la guía que recibas.',
+  },
+  'minecraft-education-1-8': {
+    resultado: 'guia',
+    titulo: 'Cuando recibas el correo',
+    descripcion: 'Abre el mensaje en tu correo institucional y utiliza la ventana o guía de descarga que se muestre. La guía observada para Minecraft Education permite continuar con la instalación.',
+  },
+  'adobe-creative-cloud-ug-1-9': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'No se ha comprobado si el proceso entrega una descarga directa, una guía o una autorización previa. Revisa el mensaje institucional y no instales Creative Cloud hasta confirmar la licencia.',
+  },
+  'power-bi-licencia-institucional-adicional-1-10': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'El procedimiento de solicitud o asignación aún no está confirmado. Revisa el correo institucional y no presentes la licencia como disponible hasta recibir una indicación oficial.',
+  },
+  'microsoft-visio-licencia-adicional-1-11': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'El procedimiento de solicitud o asignación aún no está confirmado. Revisa el correo institucional y no presentes la licencia como disponible hasta recibir una indicación oficial.',
+  },
+  'microsoft-project-licencia-adicional-1-12': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'El procedimiento de solicitud o asignación aún no está confirmado. Revisa el correo institucional y no presentes la licencia como disponible hasta recibir una indicación oficial.',
+  },
+  'antivirus-institucional-1-13': {
+    resultado: 'pendiente',
+    titulo: 'Confirma el resultado en tu correo',
+    descripcion: 'La fuente institucional no identifica en esta guía el instalador vigente. Revisa el correo recibido y utiliza solo la descarga o guía que proporcione la UG.',
+  },
+}
+
+export const contenidoGuiasUG: Record<string, GuiaBeneficioUg> = {
+  'microsoft-365-educacion-1-1': {
+    estado: 'orientacion',
+    resumen: 'La UG describe el acceso a herramientas Microsoft 365 mediante la cuenta institucional. La disponibilidad depende de la licencia asignada.',
+    requisitos: ['Cuenta institucional @ugto.mx activa.', 'Licencia institucional asignada, si el servicio la requiere.'],
+    pasos: ['Abre la plataforma institucional indicada por la UG.', 'Inicia sesión con tu cuenta institucional.', 'Desde el acceso de Microsoft 365, abre solo las aplicaciones que aparezcan disponibles para tu cuenta.'],
+    pasosDetallados: [
+      { titulo: '1. Abre la plataforma de software de la UG', descripcion: 'Entra a la plataforma institucional desde la que la UG gestiona las descargas y solicitudes de software. Ahí podrás elegir el servicio que necesitas.', enlace: { texto: 'Ir a Descarga de Software UG', url: 'https://intranet2.ugto.mx/DescargaSoftware/' } },
+      { titulo: '2. Inicia sesión con tu cuenta institucional', descripcion: 'Escribe tu cuenta de correo institucional @ugto.mx y sigue la autenticación que muestre la plataforma de la UG.' },
+      { titulo: '3. Encuentra Microsoft 365', descripcion: 'Después de entrar, busca el acceso a Microsoft 365, el iniciador de aplicaciones o el listado de servicios disponible para tu cuenta. En algunas cuentas el portal puede mostrar primero Outlook, Copilot u otra aplicación recomendada; usa el iniciador de aplicaciones para continuar.' },
+      { titulo: '4. Revisa qué tienes habilitado', descripcion: 'No todas las cuentas muestran exactamente las mismas aplicaciones. Abre el listado y confirma cuáles aparecen disponibles antes de asumir que tienes una licencia o función específica.' },
+      { titulo: '5. Usa una aplicación en línea', descripcion: 'Selecciona una aplicación que sí aparezca en tu cuenta. Si el servicio te pide volver a autenticarte, hazlo únicamente dentro del sitio oficial.' },
+      { titulo: '6. Solicita Office de escritorio si no tienes licencia', descripcion: 'Si Office aparece sin licencia, la plataforma indica que debes solicitarla por correo. Escribe a soporte@ugto.mx y espera las indicaciones de la UG antes de intentar descargarlo.' },
+      { titulo: '7. Termina de forma segura', descripcion: 'Cuando termines, cierra la sesión si utilizaste un equipo compartido. No guardes la contraseña en computadoras públicas y no compartas códigos de autenticación.' },
+    ],
+    consideraciones: ['La fuente institucional indica que el paquete Microsoft 365 se gestiona en modalidades A1, A3 y A5.', 'Al iniciar sesión, el portal puede mostrar primero Outlook, Copilot u otra aplicación recomendada. Eso no significa que hayas entrado a un sitio equivocado: busca el iniciador de aplicaciones o la lista de servicios para continuar.', 'La guía no confirma Copilot Pro ni otras licencias adicionales.'],
+    acceso: 'https://intranet2.ugto.mx/DescargaSoftware/',
+    // Prueba interna: parcial. La descarga abre una guía desactualizada y Office aparece sin licencia.
+    fuente: fuentes.apoyos,
+    fechaRevision,
+  },
+  'aplicaciones-office-de-escritorio-1-2': {
+    estado: 'orientacion',
+    resumen: 'La UG documenta aplicaciones de Office de escritorio dentro de su esquema de licenciamiento institucional.',
+    requisitos: ['Cuenta universitaria activa.', 'Licencia de escritorio asignada a tu cuenta.'],
+    pasos: ['Consulta la fuente institucional para confirmar si tu cuenta tiene licencia de escritorio.', 'Inicia sesión en el portal oficial de Microsoft con tu cuenta institucional.', 'Descarga e instala únicamente el instalador que el portal muestre para tu licencia.'],
+    consideraciones: ['La cantidad de instalaciones y las aplicaciones disponibles dependen de la licencia vigente.', 'No descargues instaladores desde sitios no oficiales ni compartas tu cuenta.'],
+    fuente: fuentes.desarrollo,
+    fechaRevision,
+  },
+  'onedrive-institucional-1-3': {
+    pasosDetallados: [
+      { titulo: '1. Abre Descarga de software UG', descripcion: 'Entra a la plataforma institucional y selecciona OneDrive. El proceso puede enviarte a un formulario en lugar de iniciar una descarga inmediata.', enlace: { texto: 'Abrir Descarga de software UG', url: 'https://intranet2.ugto.mx/DescargaSoftware/' } },
+      { titulo: '2. Completa el formulario que se muestre', descripcion: 'Lee los campos solicitados y envía únicamente la información requerida por la plataforma institucional. No compartas tu contraseña en un formulario que no pertenezca a un dominio oficial.' },
+      { titulo: '3. Revisa tu correo institucional', descripcion: 'Después de enviar la solicitud, revisa la bandeja de entrada y las carpetas de correo no deseado. La descarga o las instrucciones pueden llegar en un mensaje posterior.' },
+      { titulo: '4. Abre el enlace recibido', descripcion: 'Utiliza el enlace del correo institucional y verifica que dirija a una página oficial antes de descargar o instalar algo.' },
+      { titulo: '5. Comprueba tu acceso', descripcion: 'Inicia sesión con tu cuenta institucional y confirma que puedes abrir OneDrive antes de cargar archivos importantes.' },
+    ],
+    // Prueba interna: parcial. Se abre un formulario; falta confirmar qué ocurre después de enviarlo.
+    estado: 'orientacion',
+    resumen: 'OneDrive forma parte de las herramientas institucionales Microsoft 365 mencionadas por la UG.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Acceso a Microsoft 365 asignado.'],
+    pasos: ['Entra a Microsoft 365 con tu cuenta institucional.', 'Abre OneDrive desde el iniciador de aplicaciones o desde el portal oficial.', 'Comprueba el espacio y las opciones disponibles antes de cargar archivos importantes.'],
+    consideraciones: ['La capacidad publicada puede depender de la configuración de tu cuenta.', 'Conserva una copia de archivos importantes y revisa las reglas institucionales de uso.'],
+    fuente: fuentes.desarrollo,
+    fechaRevision,
+  },
+  'microsoft-teams-1-4': {
+    pasosDetallados: [
+      { titulo: '1. Solicita Teams desde la plataforma UG', descripcion: 'Entra a la plataforma institucional de Descarga de software y selecciona Teams. No asumas que el enlace de Microsoft por sí solo activa la cuenta.', enlace: { texto: 'Abrir Descarga de software UG', url: 'https://intranet2.ugto.mx/DescargaSoftware/' } },
+      { titulo: '2. Revisa el correo que recibas', descripcion: 'En la prueba realizada, el mensaje sí llega al correo institucional. Abre el enlace del mensaje y revisa la dirección antes de continuar.' },
+      { titulo: '3. Si aparece un error XML', descripcion: 'El enlace probado mostró el mensaje “This XML file does not appear to have any style information associated with it”. No continúes ni descargues desde esa pantalla; conserva el mensaje y repórtalo a soporte@ugto.mx.' , enlace: { texto: 'Contactar a soporte UG', url: 'mailto:soporte@ugto.mx' } },
+      { titulo: '4. Comprueba el acceso cuando el enlace funcione', descripcion: 'Cuando la UG corrija o reemplace el enlace, inicia sesión con tu cuenta institucional y confirma que puedes abrir Teams antes de usarlo para una clase o reunión.' },
+    ],
+    // Prueba interna: error. El correo llega, pero el enlace probado devuelve un error XML.
+    estado: 'orientacion',
+    resumen: 'Microsoft Teams aparece entre las herramientas institucionales disponibles mediante la identidad UG.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Acceso Microsoft 365 habilitado.'],
+    pasos: ['Abre Teams desde Microsoft 365 o desde la aplicación oficial.', 'Inicia sesión con tu cuenta institucional.', 'Únete a equipos o reuniones únicamente mediante invitaciones y enlaces oficiales.'],
+    consideraciones: ['Las funciones disponibles pueden variar según la licencia y el equipo al que pertenezcas.', 'No compartas enlaces privados de reuniones fuera del grupo correspondiente.'],
+    fuente: fuentes.apoyos,
+    fechaRevision,
+  },
+  'microsoft-forms-1-5': {
+    estado: 'orientacion',
+    resumen: 'Microsoft Forms se menciona como herramienta institucional para crear formularios y cuestionarios.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Acceso Microsoft 365 habilitado.'],
+    pasos: ['Entra al portal oficial de Microsoft 365 con tu cuenta institucional.', 'Abre Forms desde las aplicaciones disponibles.', 'Crea o responde formularios respetando las indicaciones y permisos de cada actividad.'],
+    consideraciones: ['El acceso y las funciones dependen de la configuración institucional.', 'No compartas datos personales en formularios que no identifiques como oficiales.'],
+    fuente: fuentes.tic,
+    fechaRevision,
+  },
+  'microsoft-stream-1-6': {
+    estado: 'orientacion',
+    resumen: 'Microsoft Stream aparece en el inventario UG como herramienta para almacenar y compartir videos.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Acceso Microsoft 365 habilitado.'],
+    pasos: ['Accede a Microsoft 365 con tu cuenta institucional.', 'Abre Stream desde las aplicaciones disponibles.', 'Consulta o comparte videos solo con los permisos que permita tu cuenta y el propietario del contenido.'],
+    consideraciones: ['La disponibilidad de almacenamiento y publicación depende de la configuración institucional.', 'Verifica los permisos antes de compartir material académico.'],
+    fuente: fuentes.tic,
+    fechaRevision,
+  },
+  'microsoft-whiteboard-1-7': {
+    estado: 'orientacion',
+    resumen: 'Microsoft Whiteboard se incluye entre las herramientas de colaboración de Microsoft 365 mencionadas por la UG.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Acceso Microsoft 365 habilitado.'],
+    pasos: [...softwareSteps.slice(0, 2), 'Abre Whiteboard y comprueba las opciones de colaboración habilitadas para tu cuenta.'],
+    consideraciones: ['La fuente institucional identifica la herramienta, pero no publica límites detallados de la cuenta.', 'Usa únicamente enlaces y aplicaciones oficiales.'],
+    fuente: fuentes.tic,
+    fechaRevision,
+  },
+  'minecraft-education-1-8': {
+    pasosDetallados: [
+      { titulo: '1. Selecciona Minecraft Education', descripcion: 'Entra a la plataforma institucional de Descarga de software UG, inicia sesión y elige Minecraft Education.', enlace: { texto: 'Abrir Descarga de software UG', url: 'https://intranet2.ugto.mx/DescargaSoftware/' } },
+      { titulo: '2. Solicita la descarga', descripcion: 'Selecciona la opción de descarga. La plataforma puede enviar un correo con el enlace o abrir una guía de instalación.' },
+      { titulo: '3. Revisa el correo institucional', descripcion: 'Abre el mensaje recibido y utiliza el enlace incluido. Comprueba que el enlace pertenezca a la UG o al proveedor oficial antes de continuar.' },
+      { titulo: '4. Sigue la guía que se abra', descripcion: 'La guía observada para Minecraft Education sí permite continuar. Sigue sus indicaciones para descargar, instalar e iniciar sesión; no sustituyas el enlace por una descarga de terceros.' },
+      { titulo: '5. Comprueba la licencia', descripcion: 'Inicia sesión con la cuenta autorizada y verifica que Minecraft Education abra correctamente antes de instalar contenido adicional.' },
+    ],
+    // Prueba interna: confirmado. La guía de Minecraft Education abre correctamente.
+    estado: 'limitada',
+    resumen: 'Minecraft Education aparece en una relación institucional de herramientas, pero la licencia debe comprobarse por usuario.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Licencia de Minecraft Education asignada a tu usuario.'],
+    pasos: ['Consulta la fuente institucional y confirma si tu usuario está incluido.', 'Descarga Minecraft Education únicamente desde su sitio oficial cuando la licencia esté confirmada.', 'Inicia sesión con la cuenta autorizada y comprueba el acceso antes de instalar contenido adicional.'],
+    consideraciones: ['La inclusión en la lista no garantiza activación automática para todas las personas.', 'No se confirma aquí la compatibilidad de todos los dispositivos ni la disponibilidad actual.'],
+    fuente: fuentes.apoyos,
+    fechaRevision,
+  },
+  'adobe-creative-cloud-ug-1-9': {
+    pasosDetallados: [
+      { titulo: '1. Selecciona Adobe Creative Cloud', descripcion: 'Entra a la plataforma institucional de Descarga de software UG, inicia sesión y elige Adobe Creative Cloud.', enlace: { texto: 'Abrir Descarga de software UG', url: 'https://intranet2.ugto.mx/DescargaSoftware/' } },
+      { titulo: '2. Solicita la descarga o licencia', descripcion: 'Selecciona la opción que muestre la plataforma. El resultado puede ser una descarga, un formulario o un correo de confirmación según la asignación de tu cuenta.' },
+      { titulo: '3. Revisa tu correo institucional', descripcion: 'Busca el mensaje con las instrucciones o el enlace de descarga. Si recibes un enlace, verifica que pertenezca a la UG o a Adobe antes de abrirlo.' },
+      { titulo: '4. Sigue únicamente el procedimiento recibido', descripcion: 'Instala Creative Cloud solo después de confirmar que la licencia está asignada a tu cuenta institucional. Si no recibes instrucciones o la cuenta aparece sin licencia, contacta a soporte@ugto.mx.' , enlace: { texto: 'Contactar a soporte UG', url: 'mailto:soporte@ugto.mx' } },
+    ],
+    // Prueba interna: pendiente. Falta confirmar si Adobe entrega descarga, formulario o autorización previa.
+    estado: 'limitada',
+    resumen: 'La UG documenta una asignación institucional de software Adobe para su comunidad estudiantil activa.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Acceso o asignación institucional de Adobe.'],
+    pasos: ['Consulta la fuente UG y confirma que tu cuenta tenga asignación.', 'Abre el portal oficial de Adobe e inicia sesión con la cuenta institucional autorizada.', 'Instala únicamente las aplicaciones que aparezcan disponibles en tu perfil.'],
+    consideraciones: ['La disponibilidad de aplicaciones y dispositivos depende de la asignación institucional.', 'No se debe prometer acceso a todo Creative Cloud sin comprobar el perfil.'],
+    fuente: fuentes.apoyos,
+    fechaRevision,
+  },
+  'power-bi-licencia-institucional-adicional-1-10': {
+    estado: 'limitada',
+    resumen: 'Power BI aparece como licencia institucional adicional y puede requerir solicitud y justificación.',
+    requisitos: ['Solicitud justificada ante la instancia UG correspondiente.', 'Aprobación y licencia asignada.'],
+    pasos: ['Lee la fuente oficial para identificar la instancia responsable.', 'Presenta la solicitud por el canal institucional indicado, si está disponible.', 'Espera la confirmación de asignación antes de instalar o usar una licencia adicional.'],
+    consideraciones: ['No es una licencia automáticamente gratuita para todos los estudiantes.', 'El procedimiento de solicitud no está detallado en la fuente consultada.'],
+    fuente: fuentes.apoyos,
+    fechaRevision,
+  },
+  'microsoft-visio-licencia-adicional-1-11': {
+    estado: 'limitada',
+    resumen: 'Visio aparece como licencia institucional adicional sujeta a disponibilidad y aprobación.',
+    requisitos: ['Solicitud justificada, si la instancia UG la requiere.', 'Aprobación y licencia asignada.'],
+    pasos: ['Consulta la fuente institucional.', 'Solicita información a la instancia UG responsable antes de descargar el producto.', 'Instala Visio solo después de recibir confirmación y mediante el portal oficial.'],
+    consideraciones: ['La fuente no confirma disponibilidad general ni un procedimiento completo de solicitud.', 'No uses licencias personales o instaladores no oficiales como sustituto.'],
+    fuente: fuentes.apoyos,
+    fechaRevision,
+  },
+  'microsoft-project-licencia-adicional-1-12': {
+    estado: 'limitada',
+    resumen: 'Project aparece como licencia institucional adicional sujeta a disponibilidad y aprobación.',
+    requisitos: ['Solicitud justificada, si la instancia UG la requiere.', 'Aprobación y licencia asignada.'],
+    pasos: ['Consulta la fuente institucional.', 'Solicita información a la instancia UG responsable antes de descargar el producto.', 'Instala Project solo después de recibir confirmación y mediante el portal oficial.'],
+    consideraciones: ['La fuente no confirma disponibilidad general ni un procedimiento completo de solicitud.', 'No se debe presentar como licencia gratuita automática.'],
+    fuente: fuentes.apoyos,
+    fechaRevision,
+  },
+  'antivirus-institucional-1-13': {
+    pasosDetallados: [
+      { titulo: '1. Selecciona Bitdefender', descripcion: 'Entra a la plataforma institucional de Descarga de software UG y busca Bitdefender.', enlace: { texto: 'Abrir Descarga de software UG', url: 'https://intranet2.ugto.mx/DescargaSoftware/' } },
+      { titulo: '2. Completa el formulario', descripcion: 'La prueba realizada mostró un formulario para solicitar una licencia con vigencia de seis meses. Completa solo los campos solicitados por la plataforma oficial.' },
+      { titulo: '3. Revisa el correo institucional', descripcion: 'Espera el mensaje con la confirmación o las instrucciones de descarga. Revisa también correo no deseado.' },
+      { titulo: '4. Descarga desde el enlace recibido', descripcion: 'Abre el enlace del correo y descarga Bitdefender únicamente desde la página indicada por la UG o por el proveedor oficial.' },
+      { titulo: '5. Pide ayuda si no recibes respuesta', descripcion: 'Si el formulario no responde, la licencia no llega o el enlace falla, escribe a soporte@ugto.mx con una descripción del problema. No envíes tu contraseña.', enlace: { texto: 'Contactar a soporte UG', url: 'mailto:soporte@ugto.mx' } },
+    ],
+    // Prueba interna: parcial. El formulario señala seis meses; falta verificar el correo y descarga final.
+    estado: 'limitada',
+    resumen: 'La UG lista un antivirus institucional y remite a la DSTI para conocer indicaciones y compatibilidad.',
+    requisitos: ['Consultar a la DSTI.', 'Confirmar compatibilidad y licencia antes de instalar.'],
+    pasos: ['Abre la fuente institucional y localiza la indicación vigente de la DSTI.', 'Solicita a la DSTI el procedimiento correspondiente a tu cuenta y dispositivo.', 'Instala el antivirus únicamente desde el enlace o medio oficial que te proporcione la UG.'],
+    consideraciones: ['La fuente no identifica en este registro el producto ni el instalador vigente.', 'No instales software de seguridad recomendado por fuentes no oficiales.'],
+    fuente: fuentes.desarrollo,
+    fechaRevision,
+  },
+  'wi-fi-rii-ug-1-14': {
+    estado: 'limitada',
+    resumen: 'RII-UG es la red inalámbrica institucional de la Universidad de Guanajuato.',
+    requisitos: ['Credenciales universitarias activas.', 'Estar dentro de una zona con cobertura institucional.'],
+    pasos: ['Consulta la información oficial de acceso inalámbrico de la UG.', 'Selecciona la red institucional solo cuando estés dentro de una sede UG autorizada.', 'Usa únicamente el método de autenticación indicado por la UG y solicita soporte si la conexión falla.'],
+    consideraciones: ['La fuente consultada no muestra en el registro revisado todos los parámetros técnicos de configuración.', 'No se debe asumir un SSID, certificado o método adicional sin confirmación oficial.'],
+    fuente: fuentes.sistemas,
+    fechaRevision,
+  },
+  'eduroam-1-15': {
+    estado: 'limitada',
+    resumen: 'eduroam permite conectarse a redes participantes con una cuenta institucional configurada.',
+    requisitos: ['Correo institucional y configuración eduroam UG.', 'Encontrarse en una institución participante.'],
+    pasos: ['Abre la página oficial de eduroam de la UG y consulta la configuración correspondiente a tu dispositivo.', 'Configura la red siguiendo exactamente los parámetros publicados por la UG.', 'Conéctate solo en una institución participante y contacta a la DSTI si la autenticación falla.'],
+    consideraciones: ['No se deben inventar el SSID, identidad anónima, certificados ni formato de usuario.', 'La cobertura depende de las instituciones participantes.'],
+    fuente: fuentes.eduroam,
+    fechaRevision,
+  },
+  'biblioteca-digital-ug-1-16': {
+    estado: 'orientacion',
+    resumen: 'La Biblioteca Digital UG reúne recursos electrónicos suscritos para la comunidad universitaria.',
+    requisitos: ['Cuenta institucional o acceso autorizado.', 'Conexión a internet; algunas plataformas pueden exigir red UG.'],
+    pasos: librarySteps,
+    consideraciones: ['Cada recurso puede tener una autenticación y condiciones diferentes.', 'No todos los recursos están disponibles fuera de la red UG.'],
+    fuente: fuentes.biblioteca,
+    fechaRevision,
+  },
+  'ebscohost-ebook-academic-collection-1-17': {
+    estado: 'orientacion',
+    resumen: 'EBSCOhost y eBook Academic Collection se consultan desde la Biblioteca Digital UG.',
+    requisitos: ['Cuenta UG o acceso autorizado.', 'Acceso a la Biblioteca Digital.'],
+    pasos: librarySteps,
+    consideraciones: ['La disponibilidad de colecciones depende de las suscripciones vigentes.', 'El catálogo de la biblioteca es la referencia para el acceso correcto.'],
+    fuente: fuentes.biblioteca,
+    fechaRevision,
+  },
+  'proquest-ebook-central-1-18': {
+    estado: 'orientacion',
+    resumen: 'ProQuest eBook Central se accede mediante la Biblioteca Digital UG y solicita una cuenta institucional o invitado según el recurso.',
+    requisitos: ['Cuenta de correo institucional @ugto.mx para el acceso institucional.', 'Dispositivo con conexión a internet.'],
+    pasos: ['Abre el acceso oficial de eBook Central desde la Biblioteca Digital UG.', 'En la ventana de acceso, inicia sesión con tu correo @ugto.mx cuando corresponda.', 'Consulta el libro y respeta las restricciones de lectura o descarga que muestre la plataforma.'],
+    consideraciones: ['La fuente indica que algunas personas pueden entrar como invitadas, pero eso no equivale al acceso institucional completo.', 'Si olvidaste tu contraseña, usa el enlace oficial de recuperación de la UG.'],
+    fuente: fuentes.ebookCentral,
+    fechaRevision,
+  },
+  'jove-1-19': {
+    estado: 'orientacion',
+    resumen: 'JoVE aparece entre los recursos disponibles en la Biblioteca Digital UG.',
+    requisitos: ['Acceso a la Biblioteca Digital UG.', 'Cuenta o red autorizada según el recurso.'],
+    pasos: librarySteps,
+    consideraciones: ['La fuente consultada no detalla en este registro un método de autenticación propio de JoVE.', 'Usa el enlace de acceso proporcionado por la biblioteca.'],
+    fuente: fuentes.biblioteca,
+    fechaRevision,
+  },
+  'jstor-colecciones-arts-sciences-1-20': {
+    estado: 'orientacion',
+    resumen: 'JSTOR y sus colecciones se consultan desde los recursos digitales de la Biblioteca UG.',
+    requisitos: ['Acceso a la Biblioteca Digital UG.', 'Permisos de red o autenticación que solicite la biblioteca.'],
+    pasos: ['Abre la sección de acceso de la Biblioteca Digital UG.', 'Localiza JSTOR y usa el enlace institucional proporcionado.', 'Completa la autenticación que solicite la biblioteca o la plataforma antes de consultar los recursos.'],
+    consideraciones: ['El acceso puede cambiar según la red y las suscripciones vigentes.', 'No se debe presentar una suscripción individual como parte del beneficio UG.'],
+    fuente: fuentes.bibliotecaAcceso,
+    fechaRevision,
+  },
+  'tirant-biblioteca-virtual-1-21': {
+    estado: 'orientacion',
+    resumen: 'Tirant Biblioteca Virtual aparece entre los recursos especializados de la Biblioteca Digital UG.',
+    requisitos: ['Acceso a la Biblioteca Digital UG.', 'Permisos de red o autenticación que solicite la plataforma.'],
+    pasos: ['Abre la sección de acceso de la Biblioteca Digital UG.', 'Selecciona Tirant Biblioteca Virtual desde el catálogo.', 'Completa la autenticación institucional y consulta los recursos disponibles.'],
+    consideraciones: ['La disponibilidad depende de la suscripción y la configuración del sistema bibliotecario.', 'Si no aparece el recurso, contacta a la biblioteca.'],
+    fuente: fuentes.bibliotecaAcceso,
+    fechaRevision,
+  },
+  'prestamo-bibliotecario-1-22': {
+    estado: 'orientacion',
+    resumen: 'El Sistema Bibliotecario UG ofrece préstamo de materiales con requisitos y plazos establecidos por su reglamento.',
+    requisitos: ['Credencial vigente.', 'Cuenta bibliotecaria activa.', 'Cumplir los plazos y condiciones del reglamento.'],
+    pasos: ['Consulta los servicios bibliotecarios de tu sede.', 'Localiza el material en el catálogo o solicita orientación al personal bibliotecario.', 'Presenta tu credencial y sigue las condiciones de préstamo que te indique la biblioteca.'],
+    consideraciones: ['Los plazos, renovaciones y sanciones pueden depender del material y de la sede.', 'Confirma la disponibilidad antes de acudir.'],
+    fuente: fuentes.serviciosBibliotecarios,
+    fechaRevision,
+  },
+  'intraug-tramites-1-23': {
+    estado: 'orientacion',
+    resumen: 'IntraUG reúne trámites y servicios administrativos para estudiantes de la Universidad de Guanajuato.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Requisitos particulares del trámite que quieras realizar.'],
+    pasos: ['Abre el portal oficial de IntraUG desde la fuente institucional.', 'Inicia sesión con tu cuenta institucional.', 'Selecciona el trámite y revisa sus requisitos, fechas y comprobantes antes de enviarlo.'],
+    consideraciones: ['Cada trámite puede tener convocatorias y requisitos propios.', 'La guía no sustituye las instrucciones de la convocatoria o dependencia responsable.'],
+    fuente: fuentes.apoyos,
+    fechaRevision,
+  },
+  'becas-apoyos-y-estimulos-ug-1-24': {
+    estado: 'orientacion',
+    resumen: 'La UG publica becas, apoyos y estímulos mediante convocatorias con requisitos y periodos propios.',
+    requisitos: ['Matrícula UG vigente.', 'Cumplir la convocatoria correspondiente.', 'Documentación solicitada en cada convocatoria.'],
+    pasos: ['Consulta el programa oficial y la convocatoria vigente.', 'Revisa que cumplas los requisitos y prepara únicamente la documentación solicitada.', 'Presenta la solicitud por el canal y dentro del periodo indicado por la UG.'],
+    consideraciones: ['La publicación de un programa no concede una beca automáticamente.', 'Los requisitos, montos y fechas pueden cambiar por convocatoria.'],
+    fuente: fuentes.becas,
+    fechaRevision,
+  },
+  'becas-via-intraug-2026-1-25': {
+    estado: 'orientacion',
+    resumen: 'Las becas indicadas en esta entrada se tramitan mediante el sistema y la convocatoria correspondiente.',
+    requisitos: ['Cuenta institucional @ugto.mx.', 'Documentación que solicite la convocatoria.', 'Cumplir las fechas publicadas.'],
+    pasos: ['Abre la información oficial de becas institucionales.', 'Lee la convocatoria vigente y reúne los documentos solicitados.', 'Entra al sistema indicado por la UG y envía la solicitud dentro del periodo establecido.'],
+    consideraciones: ['La convocatoria puede cambiar de un periodo a otro.', 'Guarda el folio o comprobante que entregue el sistema oficial.'],
+    fuente: fuentes.becasIntra,
+    fechaRevision,
+  },
+  'transporte-universitario-gratuito-1-26': {
+    estado: 'limitada',
+    resumen: 'La UG publica programas de transporte gratuito cuya cobertura depende del campus, ruta y condiciones locales.',
+    requisitos: ['Cumplir las condiciones del programa.', 'Consultar rutas y horarios aplicables a tu campus.'],
+    pasos: ['Abre la información oficial del programa de transporte.', 'Confirma que tu campus, ruta y periodo estén incluidos.', 'Consulta los horarios y requisitos antes de acudir al punto de abordaje.'],
+    consideraciones: ['No se debe asumir que el servicio cubre DICIS Irapuato-Salamanca.', 'Las rutas y horarios pueden cambiar; confirma la información vigente.'],
+    fuente: fuentes.transporte,
+    fechaRevision,
+  },
+  'descuento-del-25-en-educacion-continua-campus-leon-1-27': {
+    estado: 'limitada',
+    resumen: 'La fuente describe un descuento para cursos o talleres participantes de educación continua en Campus León.',
+    requisitos: ['Credencial UG resellada.', 'Hoja de inscripción.', 'Curso o taller participante en Campus León.'],
+    pasos: ['Consulta la información de educación continua del Campus León.', 'Confirma que el curso tenga el descuento y que cumplas los requisitos.', 'Presenta la credencial y la hoja de inscripción en el canal indicado por el campus.'],
+    consideraciones: ['No se debe extender este descuento a otros campus o cursos sin confirmación.', 'La fuente consultada puede requerir revisión adicional para conocer el procedimiento vigente.'],
+    fuente: fuentes.continua,
+    fechaRevision,
+  },
+  'tienda-universitaria-ug-descuento-historico-1-28': {
+    estado: 'historica',
+    resumen: 'La fuente corresponde a un anuncio de 2023 sobre la Tienda Universitaria y no confirma que el descuento siga vigente.',
+    requisitos: ['Credencial UG, únicamente si la tienda confirma actualmente el beneficio.'],
+    pasos: ['Lee el anuncio histórico para conocer el antecedente.', 'Confirma directamente con la Tienda Universitaria si el descuento continúa vigente.', 'No presentes el descuento como disponible hasta contar con una confirmación actual.'],
+    consideraciones: ['No hay procedimiento ni vigencia actual confirmados.', 'Esta guía funciona como advertencia editorial y no como instrucción de activación.'],
+    fuente: fuentes.tienda,
+    fechaRevision,
+  },
+  'credencial-ug-descuentos-externos-1-29': {
+    estado: 'orientacion',
+    resumen: 'La credencial UG acredita la condición de estudiante y puede ser solicitada por terceros para aplicar sus propias reglas.',
+    requisitos: ['Credencial UG vigente.', 'Cumplir las condiciones del establecimiento o entidad que ofrezca el descuento.'],
+    pasos: ['Consulta el procedimiento oficial de credencialización de la UG.', 'Obtén o renueva la credencial por el canal institucional correspondiente.', 'Antes de solicitar un descuento externo, confirma directamente sus requisitos, vigencia y porcentaje.'],
+    consideraciones: ['La credencial no constituye por sí misma un descuento específico.', 'Cada proveedor decide sus condiciones y puede solicitar documentación adicional.'],
+    fuente: fuentes.credencial,
+    fechaRevision,
+  },
+  'autodesk-education-3-4': {
+    estado: 'limitada',
+    resumen: 'Autodesk se solicita mediante la plataforma institucional relacionada con los servicios de software de la UG.',
+    requisitos: ['Cuenta institucional activa.', 'Cumplir los requisitos que solicite la plataforma institucional o Autodesk Education.'],
+    pasos: ['Abre la plataforma institucional indicada para Autodesk.', 'Inicia sesión y sigue el flujo que muestre el portal.', 'Si la página no termina de cargar, conserva la dirección y el mensaje observado para reportarlo a soporte@ugto.mx.'],
+    pasosDetallados: [
+      { titulo: '1. Abre la plataforma institucional', descripcion: 'Entra al portal que la UG relaciona con Autodesk Education. Durante la prueba realizada, edutics.ugto.mx se quedó cargando y no permitió continuar.', enlace: { texto: 'Abrir edutics.ugto.mx', url: 'https://edutics.ugto.mx/' } },
+      { titulo: '2. No repitas la descarga si la página no responde', descripcion: 'Si el portal permanece cargando, no sustituyas el enlace por una descarga de terceros ni introduzcas tu contraseña en otra página.' },
+      { titulo: '3. Reporta el problema', descripcion: 'Anota la fecha, el navegador y el mensaje observado. Envía la incidencia a soporte@ugto.mx para que la UG confirme el enlace vigente.', enlace: { texto: 'Contactar a soporte UG', url: 'mailto:soporte@ugto.mx' } },
+    ],
+    consideraciones: ['La prueba no confirmó una descarga ni una licencia activa.', 'La plataforma puede requerir actualización o estar temporalmente fuera de servicio.', 'No se debe presentar Autodesk como activado hasta comprobar el acceso completo.'],
+    // Prueba interna: error. edutics.ugto.mx se queda cargando y no permite continuar.
+    acceso: 'https://edutics.ugto.mx/',
+    fuente: 'https://www.autodesk.com/education/edu-software/overview',
+    fechaRevision,
+  },
+}
